@@ -1,0 +1,445 @@
+/* === ANCIENT GATE STYLES === */
+.gate-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 10000;
+    background: var(--bg-primary);
+    /* FIX: Hapus delay 2s. Sekarang fade out cepat. */
+    transition: opacity 0.5s ease;
+}
+
+.gate-overlay.fade-out {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+.gate-left, .gate-right {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--bg-card), var(--bg-secondary));
+    border: 4px solid var(--accent-earth);
+    box-shadow: 
+        inset 0 0 50px rgba(157, 108, 52, 0.3),
+        0 0 80px rgba(157, 108, 52, 0.5);
+    transition: transform 2s cubic-bezier(0.77, 0, 0.175, 1);
+    pointer-events: all;
+    /* ENHANCEMENT: Tambah denyutan cahaya gerbang */
+    animation: gatePulse 4s infinite alternate ease-in-out; 
+}
+
+/* ENHANCEMENT: Pseudo-element untuk efek energi/rune di tepi gerbang */
+.gate-left::before, .gate-right::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(76, 201, 240, 0.1) 0%, transparent 70%);
+    animation: gateDetailFlow 10s linear infinite;
+    z-index: 10001;
+    pointer-events: none;
+}
+
+.gate-left::before {
+    left: 0;
+    transform: translateX(0%);
+}
+.gate-right::after {
+    right: 0;
+    transform: translateX(0%);
+}
+
+.gate-left {
+    left: 0;
+    border-right: 2px solid var(--accent-fire);
+    transform-origin: left center;
+}
+
+.gate-right {
+    right: 0;
+    border-left: 2px solid var(--accent-fire);
+    transform-origin: right center;
+}
+
+.gate-left.open {
+    transform: rotateY(-90deg);
+}
+
+.gate-right.open {
+    transform: rotateY(90deg);
+}
+
+/* Gate Details */
+.gate-detail {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 10px;
+    background: var(--accent-fire);
+    box-shadow: 0 0 10px var(--accent-fire);
+}
+
+.gate-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10001;
+    text-align: center;
+}
+
+.gate-symbol {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-light) 0%, var(--accent-primary) 30%, transparent 70%);
+    box-shadow: 0 0 40px var(--accent-primary);
+    margin: 0 auto 20px;
+    /* ENHANCEMENT: Tambah rotasi halus */
+    animation: symbolPulse 3s infinite, symbolRotate 12s linear infinite; 
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    z-index: 10002; /* Pastikan di atas pseudo-element */
+}
+
+/* FIX: Pastikan simbol gate ikut memudar saat overlay fade out */
+.gate-overlay.fade-out .gate-symbol {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+@keyframes gatePulse {
+    from {
+        box-shadow: 
+            inset 0 0 50px rgba(157, 108, 52, 0.3), 
+            0 0 80px rgba(157, 108, 52, 0.5);
+    }
+    to {
+        box-shadow: 
+            inset 0 0 60px rgba(157, 108, 52, 0.4), 
+            0 0 100px rgba(157, 108, 52, 0.8);
+    }
+}
+
+@keyframes symbolPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* ENHANCEMENT: Rotasi Simbol */
+@keyframes symbolRotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ENHANCEMENT: Efek Aliran Energi */
+@keyframes gateDetailFlow {
+    0% {
+        transform: translateY(0) scaleY(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: translateY(-20px) scaleY(1.1);
+        opacity: 0.9;
+    }
+    100% {
+        transform: translateY(0) scaleY(1);
+        opacity: 0.8;
+    }
+}
+
+
+.embark-btn {
+    padding: 1.2rem 3rem;
+    font-size: 1.3rem;
+    background: linear-gradient(45deg, var(--accent-fire), var(--accent-water));
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: none;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    pointer-events: all !important;
+    box-shadow: 
+        0 0 30px rgba(255, 140, 0, 0.5),
+        0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.embark-btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 
+        0 0 50px rgba(76, 201, 240, 0.7),
+        0 15px 50px rgba(0, 0, 0, 0.5);
+    letter-spacing: 3px;
+}
+
+.embark-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.7s ease;
+}
+
+.embark-btn:hover::before {
+    left: 100%;
+}
+
+.gate-instruction {
+    color: var(--text-secondary);
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+/* === ELEMENTAL CONVERGENCE STYLES === */
+.elemental-convergence {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 9999;
+    opacity: 0;
+    /* FIX: Tambahkan Flexbox untuk centering sempurna */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    pointer-events: none;
+    transition: opacity 1s ease;
+    /* display: none; akan diatur via JS untuk transisi */
+}
+
+.elemental-convergence.active {
+    opacity: 1;
+    pointer-events: all;
+    /* ENHANCEMENT: Container convergence memiliki aura */
+    box-shadow: 0 0 100px rgba(76, 201, 240, 0.5);
+}
+
+.element-grid {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+}
+
+.element {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    opacity: 0;
+    transform: scale(0.1);
+}
+
+/* ENHANCEMENT: Efek getar/melayang pada elemen */
+.element#elementFire {
+    top: 0;
+    left: 0;
+    background: radial-gradient(circle, #ff6600 0%, #ff8c00 50%, transparent 70%);
+    box-shadow: 0 0 20px #ff8c00;
+    animation: elementHover 1.5s infinite alternate ease-in-out;
+}
+.element#elementWater {
+    top: 0;
+    right: 0;
+    background: radial-gradient(circle, #00bfff 0%, #4cc9f0 50%, transparent 70%);
+    box-shadow: 0 0 20px #4cc9f0;
+    animation: elementHover 1.8s infinite alternate-reverse ease-in-out;
+}
+.element#elementWind {
+    bottom: 0;
+    left: 0;
+    background: radial-gradient(circle, #a2e2ff 0%, #90e0ef 50%, transparent 70%);
+    box-shadow: 0 0 20px #90e0ef;
+    animation: elementHover 2s infinite alternate ease-in-out 0.2s;
+}
+.element#elementEarth {
+    bottom: 0;
+    right: 0;
+    background: radial-gradient(circle, #a0522d 0%, #9d6c34 50%, transparent 70%);
+    box-shadow: 0 0 20px #9d6c34;
+    animation: elementHover 2.2s infinite alternate-reverse ease-in-out;
+}
+
+.convergence-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.1);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    opacity: 0;
+    /* ENHANCEMENT: Beri glow yang kuat agar terlihat seperti inti energi */
+    box-shadow: 0 0 20px 10px var(--accent-light), 0 0 50px 20px var(--accent-primary);
+    animation: centerGlow 2s infinite alternate;
+}
+
+/* Keyframes untuk Efek Melayang/Bergetar */
+@keyframes elementHover {
+    from {
+        transform: translate(0, 0);
+    }
+    to {
+        transform: translate(3px, 5px) scale(1.03);
+    }
+}
+
+/* Keyframes untuk Cahaya Inti */
+@keyframes centerGlow {
+    from {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: translate(-50%, -50%) scale(1.05);
+        opacity: 0.9;
+    }
+}
+
+@keyframes elementPulse {
+    0% { transform: scale(1); box-shadow: 0 0 10px currentColor; }
+    50% { transform: scale(1.2); box-shadow: 0 0 30px currentColor; }
+    100% { transform: scale(1); box-shadow: 0 0 10px currentColor; }
+}
+
+.element.pulse {
+    animation: elementPulse 1s ease infinite;
+}
+
+.convergence-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Cinzel', serif;
+    font-size: 3rem;
+    color: var(--text-primary);
+    opacity: 0;
+    text-shadow: 0 0 10px var(--accent-primary);
+    text-align: center;
+    white-space: nowrap;
+    z-index: 10;
+}
+
+/* === RESPONSIVE GATE ANIMATIONS === */
+@media (max-width: 768px) {
+    .gate-symbol {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .embark-btn {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+    }
+    
+    .element {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .convergence-text {
+        font-size: 2rem;
+        white-space: normal;
+        width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    .gate-symbol {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .embark-btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    .element {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .convergence-text {
+        font-size: 1.5rem;
+    }
+}
+
+/* === SKIP BUTTON FOR RETURNING VISITORS === */
+.skip-btn {
+    position: fixed !important;
+    bottom: 2rem !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    background: rgba(0, 0, 0, 0.7) !important;
+    color: var(--text-secondary) !important;
+    border: 1px solid var(--text-muted) !important;
+    padding: 0.6rem 1.2rem !important;
+    border-radius: var(--border-radius) !important;
+    cursor: pointer !important;
+    font-size: 0.9rem !important;
+    transition: all 0.3s ease !important;
+    backdrop-filter: blur(10px) !important;
+    z-index: 10002 !important;
+    pointer-events: all !important;
+    font-family: inherit !important;
+}
+
+.skip-btn:hover {
+    background: rgba(76, 201, 240, 0.3) !important;
+    color: var(--accent-primary) !important;
+    border-color: var(--accent-primary) !important;
+    transform: translateX(-50%) translateY(-2px) !important;
+}
+
+/* === FIX INITIAL FLASH === */
+/* Style ini tetap berguna untuk tampilan awal sebelum JS berjalan */
+.gate-overlay {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.gate-overlay.visible {
+    visibility: visible;
+    opacity: 1;
+}
+
+.main-content {
+    visibility: hidden;
+}
+
+@media (max-width: 768px) {
+    .gate-cursor {
+        display: none !important;
+    }
+    
+    .skip-btn {
+        cursor: pointer !important;
+    }
+    
+    .embark-btn {
+        cursor: pointer !important;
+    }
+}
