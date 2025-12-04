@@ -1,6 +1,6 @@
 /* === VARIABLES === */
 :root {
-  /* Base Colors - Dark Theme Only */
+  /* Base Colors */
   --bg-primary: #0a0a1a;
   --bg-secondary: #1a1a2e;
   --bg-card: #1e2030;
@@ -16,9 +16,9 @@
   --accent-light: #ffdd78;
   --accent-dark: #7b4bcf;
 
-  /* Text Colors */
-  --text-primary: #e0e0ff;
-  --text-secondary: #aaccff;
+  /* Text Colors - IMPROVED CONTRAST */
+  --text-primary: #f0f0ff;
+  --text-secondary: #b8c5e0;
   --text-muted: #8892b0;
 
   /* Sizes */
@@ -31,7 +31,7 @@
   --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
-/* === BASE STYLES & RESETS === */
+/* === BASE STYLES === */
 * {
   margin: 0;
   padding: 0;
@@ -48,10 +48,9 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   overflow-x: hidden;
-  cursor: none; /* Hide default cursor for custom one */
+  cursor: none;
 }
 
-/* Show default cursor on input and textarea */
 input, textarea, button, a {
   cursor: none;
 }
@@ -77,6 +76,7 @@ a {
   z-index: 9999;
   pointer-events: none;
   transition: opacity 0.3s ease;
+  will-change: transform;
 }
 
 .cursor-dot {
@@ -93,15 +93,7 @@ a {
   transition: all 0.1s ease-out;
 }
 
-/* Cursor effects on hover */
-.link-card:hover ~ .cursor-outline,
-.cta-button:hover ~ .cursor-outline {
-  transform: translate(-50%, -50%) scale(1.5);
-  background: rgba(76, 201, 240, 0.1);
-  opacity: 0.8;
-}
-
-/* === NAVIGATION - IMPROVED FOR MOBILE === */
+/* === NAVIGATION === */
 nav {
   display: flex;
   justify-content: space-between;
@@ -154,7 +146,7 @@ nav {
   height: 18px;
 }
 
-/* Hamburger Menu - Mobile Only */
+/* Hamburger Menu */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -172,7 +164,19 @@ nav {
   border-radius: 2px;
 }
 
-/* ===== MAIN CONTENT STYLES ===== */
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* === MAIN CONTENT === */
 .main-content {
   opacity: 0;
   transition: opacity 1s ease 1s;
@@ -183,7 +187,7 @@ nav {
   opacity: 1;
 }
 
-/* ===== HERO SECTION ===== */
+/* === HERO SECTION === */
 .hero {
   min-height: 100vh;
   display: flex;
@@ -193,16 +197,49 @@ nav {
   padding: 6rem 2rem 4rem;
   position: relative;
   overflow: hidden;
-  /* Ganti dengan warna dasar sebagai fallback */
-  background-color: var(--bg-primary); 
+  background-color: var(--bg-primary);
 }
 
+/* HERO VIDEO - OPTIMIZED */
+.portal-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    min-width: 100%; 
+    min-height: 100%;
+    z-index: 1;
+    object-fit: cover;
+    transform: translate(-50%, -50%);
+    will-change: transform;
+}
+
+/* Overlay - Better approach than transform hack */
+.hero::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(10, 10, 26, 0.7) 0%,
+        rgba(10, 10, 26, 0.85) 50%,
+        rgba(10, 10, 26, 0.9) 100%
+    );
+    z-index: 2;
+}
+
+/* Corner ornaments */
 .corner-ornament {
   position: absolute;
   width: 100px;
   height: 100px;
   border: 2px solid var(--accent-primary);
   opacity: 0.3;
+  z-index: 3;
 }
 
 .corner-ornament.top-left {
@@ -235,42 +272,11 @@ nav {
 
 .hero-content {
   max-width: 800px;
-  z-index: 3; /* Z-INDEX NAIK: Pastikan konten di atas overlay (2) dan video (1) */
+  z-index: 3;
   position: relative;
 }
 
-/* ===== HERO VIDEO & OVERLAY STYLES BARU (Tambahkan di bawah HERO SECTION) ===== */
-
-.portal-video {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: auto;
-    height: auto;
-    /* Zoom 150% agar menutupi tepi dan watermark */
-    min-width: 100%; 
-    min-height: 100%;
-    z-index: 1; /* Lapisan paling bawah */
-    object-fit: cover;
-    
-    /* TRICK: Geser ke kiri (-55%) dan ke atas sedikit (-40%) */
-    /* Ini akan membuat pusat portal berada di area kanan bawah (asimetris) */
-    transform: translate(-55%, -40%); 
-}
-
-/* Overlay Hitam Transparan (Menggantikan gradient lama) */
-.hero::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #000; 
-    opacity: 0.75; /* Atur tingkat kegelapan. Coba 0.75 atau 0.8. */
-    z-index: 2; /* Di atas video (1), di bawah konten (3) */
-}
-
+/* Title wrapper */
 .title-wrapper {
   position: relative;
   margin-bottom: 2rem;
@@ -300,32 +306,34 @@ nav {
   border-radius: 50%;
 }
 
+/* Hero quote - IMPROVED SPACING */
 .hero-quote {
-  font-size: clamp(1.1rem, 3vw, 1.5rem);
+  font-size: clamp(1.1rem, 3vw, 1.4rem);
   font-style: italic;
   color: var(--text-secondary);
-  margin-bottom: 2.5rem;
+  margin-bottom: 3rem;
   padding: 0 1.5rem;
   position: relative;
-  line-height: 1.8;
+  line-height: 2;
 }
 
 .quote-mark {
-  font-size: 2em;
+  font-size: 1.5em;
   color: var(--accent-primary);
-  opacity: 0.7;
+  opacity: 0.6;
   position: relative;
-  top: 0.3em;
+  top: 0.2em;
 }
 
 .quote-mark.left {
-  margin-right: 0.5rem;
+  margin-right: 0.3rem;
 }
 
 .quote-mark.right {
-  margin-left: 0.5rem;
+  margin-left: 0.3rem;
 }
 
+/* Hero actions */
 .hero-actions {
   display: flex;
   gap: 1rem;
@@ -379,16 +387,16 @@ nav {
   transform: translateX(3px);
 }
 
-/* ===== WELCOME SECTION ===== */
+/* === WELCOME SECTION - IMPROVED SPACING === */
 .welcome-section {
-  padding: 5rem 0;
+  padding: 6rem 0;
   position: relative;
 }
 
 .welcome-title {
   text-align: center;
-  font-size: 3rem;
-  margin-bottom: 2rem;
+  font-size: clamp(2.2rem, 4vw, 3rem);
+  margin-bottom: 3rem;
   background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -398,7 +406,7 @@ nav {
 .welcome-content {
   background: var(--bg-card);
   border-radius: var(--border-radius);
-  padding: 3rem;
+  padding: 3.5rem;
   margin-top: 2rem;
   border: 1px solid rgba(76, 201, 240, 0.1);
   box-shadow: var(--shadow-lg);
@@ -406,21 +414,26 @@ nav {
 
 .welcome-text {
   color: var(--text-secondary);
-  line-height: 1.8;
+  line-height: 1.9;
   font-size: 1.1rem;
 }
 
-.welcome-text p {
+.welcome-text h2 {
   margin-bottom: 1.5rem;
+  color: var(--text-primary);
+}
+
+.welcome-text p {
+  margin-bottom: 2rem;
 }
 
 .welcome-list {
-  margin: 1.5rem 0 2rem 2rem;
+  margin: 2rem 0 2.5rem 2rem;
   list-style: none;
 }
 
 .welcome-list li {
-  margin-bottom: 1rem;
+  margin-bottom: 1.3rem;
   position: relative;
   padding-left: 1.5rem;
 }
@@ -430,6 +443,7 @@ nav {
   position: absolute;
   left: 0;
   color: var(--accent-primary);
+  font-size: 1.2em;
 }
 
 .accent-primary { color: var(--accent-primary); }
@@ -440,23 +454,23 @@ nav {
 .welcome-quote {
   text-align: center;
   margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid rgba(76, 201, 240, 0.2);
   font-style: italic;
   color: var(--accent-primary);
-  font-size: 1.2rem;
-  border-left: 3px solid var(--accent-primary);
-  padding-left: 1.5rem;
+  font-size: 1.3rem;
 }
 
-/* ===== PORTAL CARDS SECTION ===== */
+/* === PORTAL CARDS SECTION === */
 .portals-section {
-  padding: 5rem 0;
+  padding: 6rem 0;
   background: var(--bg-secondary);
 }
 
 .section-title {
   text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 3rem;
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  margin-bottom: 4rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -548,6 +562,7 @@ nav {
 .portal-card p {
   color: var(--text-secondary);
   margin-bottom: 1rem;
+  line-height: 1.6;
 }
 
 .portal-link {
@@ -556,7 +571,7 @@ nav {
   margin-top: 1rem;
 }
 
-/* ===== FOOTER ===== */
+/* === FOOTER === */
 footer {
   background: linear-gradient(to top, var(--bg-secondary), var(--bg-primary));
   padding: 3rem 0;
@@ -593,222 +608,7 @@ footer {
   animation: pulse-glow 2s infinite;
 }
 
-/* === RESPONSIVE DESIGN === */
-@media (max-width: 1200px) {
-  .container {
-    padding: 0 1.5rem;
-  }
-}
-
-@media (max-width: 968px) {
-  .nav-links {
-    gap: 1rem;
-  }
-  
-  .hero-title {
-    font-size: 2.8rem;
-  }
-  
-  .welcome-title {
-    font-size: 2.5rem;
-  }
-}
-
-@media (max-width: 768px) {
-  /* Show hamburger, hide nav links */
-  .hamburger {
-    display: flex;
-  }
-  
-  .nav-links {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    height: 100vh;
-    width: 280px;
-    background: var(--bg-secondary);
-    flex-direction: column;
-    padding: 6rem 2rem 2rem;
-    transition: right 0.3s ease;
-    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
-    border-left: 1px solid rgba(76, 201, 240, 0.1);
-    overflow-y: auto;
-    overscroll-behavior: contain;
-  }
-
-  .nav-links::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  .nav-links::-webkit-scrollbar-track {
-    background: rgba(10, 10, 26, 0.3);
-    border-radius: 3px;
-  }
-  
-  .nav-links::-webkit-scrollbar-thumb {
-    background: var(--accent-primary);
-    border-radius: 3px;
-  }
-  
-  .nav-links::-webkit-scrollbar-thumb:hover {
-    background: rgba(76, 201, 240, 0.8);
-  }
-  
-  .nav-links.active {
-    right: 0;
-  }
-  
-  .nav-links li a {
-    justify-content: center;
-    padding: 1rem;
-    width: 100%;
-  }
-  
-  /* Hero adjustments */
-  .hero {
-    padding: 8rem 1rem 4rem;
-  }
-  
-  .corner-ornament {
-    width: 60px;
-    height: 60px;
-  }
-  
-  .hero-actions {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .cta-button {
-    width: 100%;
-    max-width: 300px;
-    justify-content: center;
-  }
-  
-  /* Section adjustments */
-  .section-title {
-    font-size: 2rem;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .welcome-title {
-    font-size: 2.2rem;
-  }
-  
-  .welcome-content {
-    padding: 2rem;
-  }
-  
-  .portal-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  /* Hide custom cursor on mobile */
-  .cursor-dot, .cursor-outline {
-    display: none;
-  }
-  
-  body {
-    cursor: auto;
-  }
-  
-  input, textarea, button, a {
-    cursor: auto;
-  }
-
-   /* Hide cursor on mobile */
-    .cursor-dot, .cursor-outline {
-        display: none !important;
-    }
-    
-    body {
-        cursor: auto !important;
-    }
-    
-    input, textarea, button, a {
-        cursor: pointer !important;
-    }
-    
-    /* Hide gate cursor on mobile */
-    .gate-cursor {
-        display: none !important;
-    }
-}
-
-@media (max-width: 480px) {
-  nav {
-    padding: 1rem;
-  }
-  
-  .logo h1 {
-    font-size: 1.5rem;
-  }
-  
-  .hero-title {
-    font-size: 2.2rem;
-  }
-  
-  .hero-quote {
-    font-size: 1rem;
-    padding: 0 1rem;
-  }
-  
-  .welcome-title {
-    font-size: 1.8rem;
-  }
-  
-  .welcome-content {
-    padding: 1.5rem;
-  }
-  
-  .portal-card {
-    padding: 2rem 1.5rem;
-  }
-  
-  .portal-icon {
-    width: 60px;
-    height: 60px;
-  }
-  
-  .portal-icon i {
-    width: 24px;
-    height: 24px;
-  }
-
-   /* Hide cursor on mobile */
-    .cursor-dot, .cursor-outline {
-        display: none !important;
-    }
-    
-    body {
-        cursor: auto !important;
-    }
-    
-    input, textarea, button, a {
-        cursor: pointer !important;
-    }
-    
-    /* Hide gate cursor on mobile */
-    .gate-cursor {
-        display: none !important;
-    }
-}
-
-/* Hamburger animation */
-.hamburger.active span:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
-}
-
-.hamburger.active span:nth-child(2) {
-  opacity: 0;
-}
-
-.hamburger.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(7px, -6px);
-}
-
-/* === DROPDOWN MENU STYLES === */
+/* === DROPDOWN MENU === */
 .dropdown {
     position: relative;
 }
@@ -851,7 +651,6 @@ footer {
     margin-top: 0.5rem;
 }
 
-/* Show dropdown only when active */
 .dropdown.active .dropdown-menu {
     opacity: 1;
     visibility: visible;
@@ -886,8 +685,40 @@ footer {
     margin: 0.5rem 1rem;
 }
 
-/* Mobile-specific dropdown styles */
+/* === RESPONSIVE === */
 @media (max-width: 768px) {
+    /* Hamburger visible */
+    .hamburger {
+        display: flex;
+    }
+    
+    /* Mobile navigation */
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        height: 100vh;
+        width: 280px;
+        background: var(--bg-secondary);
+        flex-direction: column;
+        padding: 6rem 2rem 2rem;
+        transition: right 0.3s ease;
+        box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
+        border-left: 1px solid rgba(76, 201, 240, 0.1);
+        overflow-y: auto;
+    }
+    
+    .nav-links.active {
+        right: 0;
+    }
+    
+    .nav-links li a {
+        justify-content: center;
+        padding: 1rem;
+        width: 100%;
+    }
+    
+    /* Mobile dropdown */
     .dropdown-menu {
         position: static;
         width: 100%;
@@ -904,21 +735,8 @@ footer {
     
     .mobile-dropdown.active .dropdown-menu {
         opacity: 1;
-        max-height: 300px;
-        overflow-y: auto;
+        max-height: 400px;
     }
-
-    .mobile-dropdown.active .dropdown-menu::-webkit-scrollbar {
-    width: 4px;
-  }
-  
-  .mobile-dropdown.active .dropdown-menu::-webkit-scrollbar-track {
-    background: rgba(10, 10, 26, 0.2);
-  }
-  
-  .mobile-dropdown.active .dropdown-menu::-webkit-scrollbar-thumb {
-    background: rgba(76, 201, 240, 0.5);
-  }
     
     .dropdown-menu a {
         padding: 0.75rem 1rem 0.75rem 2.5rem;
@@ -927,5 +745,70 @@ footer {
     
     .dropdown-menu a:hover {
         padding-left: 3rem;
+    }
+    
+    /* Hero adjustments */
+    .hero {
+        padding: 8rem 1rem 4rem;
+    }
+    
+    .corner-ornament {
+        display: none;
+    }
+    
+    .hero-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .cta-button {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+    }
+    
+    /* Welcome section */
+    .welcome-content {
+        padding: 2.5rem;
+    }
+    
+    .welcome-text {
+        font-size: 1rem;
+    }
+    
+    /* Portal grid */
+    .portal-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Hide custom cursor */
+    .cursor-dot, .cursor-outline {
+        display: none !important;
+    }
+    
+    body {
+        cursor: auto !important;
+    }
+    
+    input, textarea, button, a {
+        cursor: pointer !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo h1 {
+        font-size: 1.5rem;
+    }
+    
+    .welcome-content {
+        padding: 2rem;
+    }
+    
+    .welcome-text {
+        font-size: 0.95rem;
+    }
+    
+    .portal-card {
+        padding: 2rem 1.5rem;
     }
 }
