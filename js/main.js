@@ -6,17 +6,86 @@ const MainApp = (function() {
     let cursorDot = null;
     let cursorOutline = null;
     let isCursorInitialized = false;
+    let body = null;
     
     // Initialize
     function init() {
         console.log('MainApp initialized');
+        body = document.body;
         cacheElements();
         bindEvents();
-        // Custom Cursor: Diubah agar muncul selalu di awal (permintaan user)
-        initCustomCursor(); 
+        initDropdowns(); // Initialize dropdowns
+        initCustomCursor();
     }
     
-    // Initialize custom cursor (akan dipanggil dari gate animation)
+    // GANTI fungsi initDropdowns() dengan ini:
+function initDropdowns() {
+    console.log('Initializing dropdowns');
+    
+    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+    const dropdowns = document.querySelectorAll('.dropdown');
+    
+    // Handle dropdown toggle clicks
+    dropdownToggles.forEach(toggle => {
+        toggle.addEventListener('click', function(e) {
+            // Always handle click for mobile-dropdown
+            if (this.closest('.mobile-dropdown')) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const dropdown = this.closest('.dropdown');
+                const isActive = dropdown.classList.contains('active');
+                
+                // Close all other dropdowns
+                dropdowns.forEach(d => {
+                    if (d !== dropdown) {
+                        d.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current dropdown
+                dropdown.classList.toggle('active');
+                console.log('Mobile dropdown toggled:', dropdown.classList.contains('active'));
+            }
+        });
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.dropdown')) {
+            dropdowns.forEach(dropdown => {
+                dropdown.classList.remove('active');
+            });
+        }
+    });
+    
+    // Close dropdowns on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            dropdowns.forEach(dropdown => {
+                dropdown.classList.remove('active');
+            });
+        }
+    });
+    
+    // Handle hover for desktop (non-mobile dropdowns)
+    if (window.innerWidth > 768) {
+        dropdowns.forEach(dropdown => {
+            // Only add hover for non-mobile dropdowns
+            if (!dropdown.classList.contains('mobile-dropdown')) {
+                dropdown.addEventListener('mouseenter', function() {
+                    this.classList.add('active');
+                });
+                
+                dropdown.addEventListener('mouseleave', function() {
+                    this.classList.remove('active');
+                });
+            }
+        });
+    }
+}
+    
+    // Initialize custom cursor
     function initCustomCursor() {
         if (isCursorInitialized) {
             console.log('Cursor already initialized');
@@ -28,7 +97,6 @@ const MainApp = (function() {
         
         if (!cursorDot || !cursorOutline) {
             console.warn('Cursor elements not found, will retry...');
-            // Coba lagi setelah delay
             setTimeout(() => {
                 cursorDot = document.querySelector('.cursor-dot');
                 cursorOutline = document.querySelector('.cursor-outline');
@@ -46,7 +114,7 @@ const MainApp = (function() {
     function setupCursor() {
         console.log('Setting up custom cursor');
         
-        // Pastikan cursor visible (menggunakan opacity 1, karena display sudah 'block' di CSS)
+        // Pastikan cursor visible
         cursorDot.style.opacity = '1';
         cursorOutline.style.opacity = '0.5';
         
@@ -57,7 +125,7 @@ const MainApp = (function() {
         document.addEventListener('mousemove', handleMouseMove);
         
         // Hover effects untuk interactive elements
-        const interactiveElements = 'a, button, .cta-button, .portal-card, .nav-links a, input, textarea';
+        const interactiveElements = 'a, button, .cta-button, .portal-card, .nav-links a, .dropdown-toggle, .dropdown-menu a, input, textarea';
         document.querySelectorAll(interactiveElements).forEach(el => {
             el.addEventListener('mouseenter', handleElementHover);
             el.addEventListener('mouseleave', handleElementLeave);
@@ -108,7 +176,6 @@ const MainApp = (function() {
     function cacheElements() {
         hamburger = document.querySelector('.hamburger');
         navLinks = document.querySelector('.nav-links');
-        // cursorDot dan cursorOutline akan di-cache di initCustomCursor
     }
     
     // Bind event listeners
@@ -121,7 +188,33 @@ const MainApp = (function() {
             
             // Close mobile menu when clicking a link
             document.querySelectorAll('.nav-links a').forEach(link => {
-                link.addEventListener('click', closeMobileMenu);
+                link.addEventListener('click', function(e) {
+                    // Don't close if clicking dropdown toggle
+                    if (this.classList.contains('dropdown-toggle')) {
+                        return;
+                    }
+                    
+                    // Close mobile menu for regular links
+                    closeMobileMenu();
+                });
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                const isClickInsideNav = event.target.closest('nav');
+                const isClickInsideSidebar = event.target.closest('.nav-links');
+                const isClickOnHamburger = event.target.closest('.hamburger');
+                
+                if (!isClickInsideNav && !isClickInsideSidebar && !isClickOnHamburger && navLinks.classList.contains('active')) {
+                    closeMobileMenu();
+                }
+            });
+            
+            // Handle Escape key to close sidebar
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+                    closeMobileMenu();
+                }
             });
         }
         
@@ -145,13 +238,33 @@ const MainApp = (function() {
     
     // Mobile menu functions
     function toggleMobileMenu() {
+        const isOpening = !navLinks.classList.contains('active');
+        
         navLinks.classList.toggle('active');
         hamburger.classList.toggle('active');
+        
+        // Toggle body class untuk CSS control
+        body.classList.toggle('menu-open', navLinks.classList.contains('active'));
+        
+        // Toggle body scroll when menu is open
+        const isMenuOpen = navLinks.classList.contains('active');
+        body.style.overflow = isMenuOpen ? 'hidden' : '';
+        
+        console.log('Mobile menu toggled:', isMenuOpen ? 'opened' : 'closed');
     }
     
     function closeMobileMenu() {
         navLinks.classList.remove('active');
         hamburger.classList.remove('active');
+        body.classList.remove('menu-open');
+        body.style.overflow = '';
+        
+        // Also close all dropdowns
+        document.querySelectorAll('.dropdown').forEach(dropdown => {
+            dropdown.classList.remove('active');
+        });
+        
+        console.log('Mobile menu closed');
     }
     
     // Smooth scroll handling
@@ -167,6 +280,11 @@ const MainApp = (function() {
                 top: targetElement.offsetTop - 80,
                 behavior: 'smooth'
             });
+            
+            // Close mobile menu jika terbuka
+            if (navLinks && navLinks.classList.contains('active')) {
+                closeMobileMenu();
+            }
         }
     }
     
@@ -203,7 +321,7 @@ const MainApp = (function() {
     
     // Handle window resize
     function handleWindowResize() {
-        // Show/hide custom cursor based on screen size
+        // Handle custom cursor
         if (window.innerWidth <= 768) {
             // Hide custom cursor on mobile
             if (cursorDot) cursorDot.style.display = 'none';
@@ -212,6 +330,11 @@ const MainApp = (function() {
             
             // Remove mouse move listener
             document.removeEventListener('mousemove', handleMouseMove);
+            
+            // Close all dropdowns on mobile resize
+            document.querySelectorAll('.dropdown').forEach(dropdown => {
+                dropdown.classList.remove('active');
+            });
         } else {
             // Show custom cursor on desktop
             if (cursorDot && cursorOutline && isCursorInitialized) {
@@ -222,6 +345,58 @@ const MainApp = (function() {
                 // Re-add mouse move listener
                 document.addEventListener('mousemove', handleMouseMove);
             }
+            
+            // Reset mobile menu when resizing to desktop
+            if (navLinks && hamburger) {
+                navLinks.classList.remove('active');
+                hamburger.classList.remove('active');
+                body.classList.remove('menu-open');
+                body.style.overflow = '';
+                
+                console.log('Mobile states reset on desktop resize');
+            }
+        }
+    }
+    
+    // Initialize scroll animations
+    function initScrollAnimations() {
+        const elements = document.querySelectorAll('.portal-card, .welcome-content');
+        
+        elements.forEach(element => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(20px)';
+            element.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        });
+        
+        // Initial check
+        checkScrollAnimations();
+        
+        // Listen for scroll
+        window.addEventListener('scroll', checkScrollAnimations);
+    }
+    
+    // Check and trigger scroll animations
+    function checkScrollAnimations() {
+        const elements = document.querySelectorAll('.portal-card, .welcome-content');
+        
+        elements.forEach(element => {
+            const elementTop = element.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+            
+            if (elementTop < windowHeight - 100) {
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            }
+        });
+    }
+    
+    // Initialize main content fade-in
+    function initContentFadeIn() {
+        const mainContent = document.querySelector('.main-content');
+        if (mainContent) {
+            setTimeout(() => {
+                mainContent.classList.add('visible');
+            }, 1000);
         }
     }
     
@@ -231,7 +406,9 @@ const MainApp = (function() {
         initCustomCursor: initCustomCursor,
         toggleMobileMenu: toggleMobileMenu,
         closeMobileMenu: closeMobileMenu,
-        handleWindowResize: handleWindowResize
+        handleWindowResize: handleWindowResize,
+        initScrollAnimations: initScrollAnimations,
+        initContentFadeIn: initContentFadeIn
     };
 })();
 
@@ -252,35 +429,15 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         MainApp.handleWindowResize();
     }, 100);
-});
-
-// Scroll animations
-window.addEventListener('scroll', () => {
-    const elements = document.querySelectorAll('.portal-card, .welcome-content');
     
-    elements.forEach(element => {
-        const elementTop = element.getBoundingClientRect().top;
-        const windowHeight = window.innerHeight;
-        
-        if (elementTop < windowHeight - 100) {
-            element.style.opacity = '1';
-            element.style.transform = 'translateY(0)';
-        }
-    });
-});
-
-// Set initial styles for scroll animations
-document.addEventListener('DOMContentLoaded', () => {
-    const elements = document.querySelectorAll('.portal-card, .welcome-content');
+    // Initialize scroll animations
+    MainApp.initScrollAnimations();
     
-    elements.forEach(element => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(20px)';
-        element.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-    });
+    // Initialize content fade-in
+    MainApp.initContentFadeIn();
 });
 
-// Debug helper untuk testing cursor
+// Debug helper untuk testing
 window.debugCursor = {
     enable: () => {
         if (window.MainApp && typeof window.MainApp.initCustomCursor === 'function') {
@@ -295,5 +452,17 @@ window.debugCursor = {
         if (cursorOutline) cursorOutline.style.display = 'none';
         document.body.style.cursor = 'auto';
         console.log('Cursor manually disabled');
+    },
+    toggleMenu: () => {
+        if (window.MainApp && typeof window.MainApp.toggleMobileMenu === 'function') {
+            window.MainApp.toggleMobileMenu();
+            console.log('Mobile menu manually toggled');
+        }
+    },
+    closeMenu: () => {
+        if (window.MainApp && typeof window.MainApp.closeMobileMenu === 'function') {
+            window.MainApp.closeMobileMenu();
+            console.log('Mobile menu manually closed');
+        }
     }
 };
