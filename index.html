@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World of Aetherlyn - Komunitas Fantasi Roleplay</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/landing.css">
+    <link rel="stylesheet" href="css/gate-animations.css">
+</head>
+<style>
+/* --- FIX: Menghilangkan style !important yang menyebabkan konflik --- */
+    body {
+        overflow: hidden; /* Tetap hidden saat intro */
+        cursor: none;
+    }
+    
+    /* HIDE main content secara default di HTML, sebelum JS berjalan */
+    .main-content {
+        opacity: 0;
+        visibility: hidden;
+    }
+    
+    /* Logika kursor kini sepenuhnya diatur oleh kelas 'visible' pada main-content */
+    .cursor-dot,
+    .cursor-outline {
+        display: none;
+    }
+    
+    .main-content.visible ~ .cursor-dot,
+    .main-content.visible ~ .cursor-outline {
+        display: block !important;
+        opacity: 1 !important;
+    }
+    
+    /* Ensure cursor is above everything */
+    .cursor-dot {
+        z-index: 1000000;
+    }
+    
+    .cursor-outline {
+        z-index: 999999;
+    }
+</style>
+<body>
+    <div class="gate-overlay" id="gateOverlay">
+        <div class="gate-left" id="gateLeft">
+            <div class="gate-detail"></div>
+        </div>
+        <div class="gate-right" id="gateRight">
+            <div class="gate-detail"></div>
+        </div>
+        
+        <div class="gate-center">
+            <div class="gate-symbol"></div>
+            <button class="embark-btn" id="embarkBtn">
+                <i class="fas fa-door-open"></i> Embark The Journey
+            </button>
+            <p class="gate-instruction">
+                Click to enter the world of Aetherlyn
+            </p>
+        </div>
+    </div>
+
+    <div class="elemental-convergence" id="elementalConvergence">
+        <div class="element fire" id="elementFire"></div>
+        <div class="element water" id="elementWater"></div>
+        <div class="element wind" id="elementWind"></div>
+        <div class="element earth" id="elementEarth"></div>
+        <div class="convergence-center" id="convergenceCenter"></div>
+        <div class="convergence-text" id="convergenceText"><strong>[System : Transmitted to the new world]</strong></div>
+    </div>
+
+    <div class="main-content" id="mainContent">
+        <div class="cursor-dot"></div>
+        <div class="cursor-outline"></div>
+
+        <nav>
+            <div class="logo">
+                <h1>World of Aetherlyn</h1>
+            </div>
+            
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="#" class="active"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="https://worldofaetherlyn.web.id"><i class="fas fa-code-branch"></i> Patch Notes</a></li>
+                <li><a href="https://worldbuilding.worldofaetherlyn.web.id"><i class="fas fa-globe-asia"></i> Worldbuilding</a></li>
+                <li><a href="https://archive.worldofaetherlyn.web.id"><i class="fas fa-archive"></i> Codex</a></li>
+                <li><a href="https://catalog.worldofaetherlyn.web.id"><i class="fas fa-book"></i> Catalog</a></li>
+            </ul>
+        </nav>
+
+        <section class="hero">
+            <div class="corner-ornament top-left"></div>
+            <div class="corner-ornament top-right"></div>
+            <div class="corner-ornament bottom-left"></div>
+            <div class="corner-ornament bottom-right"></div>
+            
+            <div class="container">
+                <div class="hero-content">
+                    <div class="title-wrapper">
+                        <div class="title-ornament"></div>
+                        <h1 class="hero-title pulse-glow">You Have Entered Aetherlyn</h1>
+                    </div>
+                    
+                    <p class="hero-quote">
+                        <span class="quote-mark left">"</span>
+                        The gate has opened, the elements have converged. Your story begins here.
+                        <span class="quote-mark right">"</span>
+                    </p>
+                    
+                    <div class="hero-actions">
+                        <a href="#welcome" class="cta-button primary">
+                            <i class="fas fa-scroll"></i> Begin Your Tale
+                        </a>
+                        <a href="#portals" class="cta-button secondary">
+                            <i class="fas fa-compass"></i> Explore Portals
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="welcome" class="welcome-section">
+            <div class="container">
+                <h2 class="welcome-title">Your Journey Awaits</h2>
+                
+                <div class="welcome-content">
+                    <div class="welcome-text">
+                        <h2><strong>[System]</strong></h2>
+
+                        <p>Selamat datang, petualang pemberani. Anda telah melewati Gerbang Kuno Aetherlyn, menyaksikan konvergensi kekuatan elemental, dan kini berdiri di awal kisah epik Anda sendiri.</p>
+                        
+                        <p>Ini lebih dari sekadar situs web—ini adalah portal hidup menuju dunia yang diciptakan oleh para pemimpi, pendongeng, dan kreator. Setiap sudut menyimpan petualangan baru, setiap halaman mengungkap babak lain dalam kisah kolektif kita.</p>
+                        
+                        <p>Sebagai pendatang baru di dunia kami, Anda memiliki kesempatan unik untuk:</p>
+                        
+                        <ul class="welcome-list">
+                            <li><strong class="accent-primary">Menjelajahi</strong> lore dan sejarah yang kaya di Codex dan Worldbuilding kami</li>
+                            <li><strong class="accent-secondary">Berkontribusi</strong> pada narasi yang terus berkembang melalui event komunitas</li>
+                            <li><strong class="accent-wind">Temukan</strong> rahasia tersembunyi dan kisah-kisah terlupakan di Codex kami</li>
+                            <li><strong class="accent-earth">Bangun</strong> warisan Anda dalam Katalog karakter dan dunia yang komprehensif</li>
+                        </ul>
+                        
+                        <p>Gerbang di belakang Anda kini telah tertutup, tetapi pintu-pintu yang tak terhitung jumlahnya di depan menanti sentuhan Anda. Akankah Anda menjadi seorang penjelajah, pendongeng, pembangun, atau mungkin sesuatu yang sepenuhnya baru?</p>
+                        
+                        <p class="welcome-quote">
+                            "In Aetherlyn, every visitor becomes a creator, and every moment becomes a memory."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="portals" class="portals-section">
+            <div class="container">
+                <h2 class="section-title">
+                    <i class="fas fa-door-open"></i> Gateways to Adventure
+                </h2>
+                
+                <div class="portal-grid">
+                    <a href="https://worldofaetherlyn.web.id" class="portal-card patch">
+                        <div class="portal-icon">
+                            <i class="fas fa-code-branch"></i>
+                        </div>
+                        <h3>Patch Notes</h3>
+                        <p>Informasi tentang Patch, system, dan perubahan terbaru</p>
+                        <p class="portal-link">
+                            <i class="fas fa-external-link-alt"></i> Enter Portal
+                        </p>
+                    </a>
+                    
+                    <a href="https://worldbuilding.worldofaetherlyn.web.id" class="portal-card world">
+                        <div class="portal-icon">
+                            <i class="fas fa-globe-asia"></i>
+                        </div>
+                        <h3>Worldbuilding</h3>
+                        <p>Jelajahi setiap tempat, wilayah, dan realm tersembunyi.</p>
+                        <p class="portal-link">
+                            <i class="fas fa-external-link-alt"></i> Enter Portal
+                        </p>
+                    </a>
+                    
+                    <a href="https://archive.worldofaetherlyn.web.id" class="portal-card archive">
+                        <div class="portal-icon">
+                            <i class="fas fa-archive"></i>
+                        </div>
+                        <h3>Codex</h3>
+                        <p>Catatan sejarah, dan warisan leluhur.</p>
+                        <p class="portal-link">
+                            <i class="fas fa-external-link-alt"></i> Enter Portal
+                        </p>
+                    </a>
+                    
+                    <a href="https://catalog.worldofaetherlyn.web.id" class="portal-card catalog">
+                        <div class="portal-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3>Catalog</h3>
+                        <p>Character registry, item database, and world assets</p>
+                        <p class="portal-link">
+                            <i class="fas fa-external-link-alt"></i> Enter Portal
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <p>© 2025 World of Aetherlyn. You have entered through the Ancient Gate.</p>
+                    <p>Website Expansion Project v4.0 - The Gatekeeper's Edition</p>
+                    <p class="footer-note">
+                        <i class="fas fa-key"></i> This session has been recorded in the Gatekeeper's Log
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/gate-animation.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
