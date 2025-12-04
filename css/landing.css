@@ -193,10 +193,8 @@ nav {
   padding: 6rem 2rem 4rem;
   position: relative;
   overflow: hidden;
-  background: 
-    radial-gradient(circle at 20% 20%, rgba(76, 201, 240, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(147, 104, 255, 0.1) 0%, transparent 50%),
-    var(--bg-primary);
+  /* Ganti dengan warna dasar sebagai fallback */
+  background-color: var(--bg-primary); 
 }
 
 .corner-ornament {
@@ -237,8 +235,40 @@ nav {
 
 .hero-content {
   max-width: 800px;
-  z-index: 2;
+  z-index: 3; /* Z-INDEX NAIK: Pastikan konten di atas overlay (2) dan video (1) */
   position: relative;
+}
+
+/* ===== HERO VIDEO & OVERLAY STYLES BARU (Tambahkan di bawah HERO SECTION) ===== */
+
+.portal-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: auto;
+    height: auto;
+    /* Zoom 150% agar menutupi tepi dan watermark */
+    min-width: 100%; 
+    min-height: 100%;
+    z-index: 1; /* Lapisan paling bawah */
+    object-fit: cover;
+    
+    /* TRICK: Geser ke kiri (-55%) dan ke atas sedikit (-40%) */
+    /* Ini akan membuat pusat portal berada di area kanan bawah (asimetris) */
+    transform: translate(-55%, -40%); 
+}
+
+/* Overlay Hitam Transparan (Menggantikan gradient lama) */
+.hero::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000; 
+    opacity: 0.75; /* Atur tingkat kegelapan. Coba 0.75 atau 0.8. */
+    z-index: 2; /* Di atas video (1), di bawah konten (3) */
 }
 
 .title-wrapper {
@@ -602,6 +632,26 @@ footer {
     transition: right 0.3s ease;
     box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
     border-left: 1px solid rgba(76, 201, 240, 0.1);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .nav-links::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .nav-links::-webkit-scrollbar-track {
+    background: rgba(10, 10, 26, 0.3);
+    border-radius: 3px;
+  }
+  
+  .nav-links::-webkit-scrollbar-thumb {
+    background: var(--accent-primary);
+    border-radius: 3px;
+  }
+  
+  .nav-links::-webkit-scrollbar-thumb:hover {
+    background: rgba(76, 201, 240, 0.8);
   }
   
   .nav-links.active {
@@ -756,4 +806,126 @@ footer {
 
 .hamburger.active span:nth-child(3) {
   transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* === DROPDOWN MENU STYLES === */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-toggle {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dropdown-toggle::after {
+    content: '\f078';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    font-size: 0.8rem;
+    margin-left: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.dropdown.active .dropdown-toggle::after {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 220px;
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-lg);
+    padding: 0.5rem 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1001;
+    border: 1px solid rgba(76, 201, 240, 0.1);
+    margin-top: 0.5rem;
+}
+
+/* Show dropdown only when active */
+.dropdown.active .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-menu li {
+    list-style: none;
+    margin: 0;
+}
+
+.dropdown-menu a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    color: var(--text-secondary);
+    transition: var(--transition);
+    border-left: 3px solid transparent;
+}
+
+.dropdown-menu a:hover {
+    background: rgba(76, 201, 240, 0.1);
+    color: var(--accent-primary);
+    border-left-color: var(--accent-primary);
+    padding-left: 1.75rem;
+}
+
+.dropdown-menu .divider {
+    height: 1px;
+    background: rgba(76, 201, 240, 0.1);
+    margin: 0.5rem 1rem;
+}
+
+/* Mobile-specific dropdown styles */
+@media (max-width: 768px) {
+    .dropdown-menu {
+        position: static;
+        width: 100%;
+        background: rgba(10, 10, 26, 0.3);
+        box-shadow: none;
+        border: 1px solid rgba(76, 201, 240, 0.1);
+        padding: 0;
+        margin: 0.5rem 0 0 0;
+        opacity: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: opacity 0.3s ease, max-height 0.3s ease;
+    }
+    
+    .mobile-dropdown.active .dropdown-menu {
+        opacity: 1;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .mobile-dropdown.active .dropdown-menu::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .mobile-dropdown.active .dropdown-menu::-webkit-scrollbar-track {
+    background: rgba(10, 10, 26, 0.2);
+  }
+  
+  .mobile-dropdown.active .dropdown-menu::-webkit-scrollbar-thumb {
+    background: rgba(76, 201, 240, 0.5);
+  }
+    
+    .dropdown-menu a {
+        padding: 0.75rem 1rem 0.75rem 2.5rem;
+        border-left: none;
+    }
+    
+    .dropdown-menu a:hover {
+        padding-left: 3rem;
+    }
 }
