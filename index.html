@@ -9,19 +9,16 @@
     <link rel="stylesheet" href="css/gate-animations.css">
 </head>
 <style>
-/* --- FIX: Menghilangkan style !important yang menyebabkan konflik --- */
     body {
-        overflow: hidden; /* Tetap hidden saat intro */
+        overflow: hidden;
         cursor: none;
     }
     
-    /* HIDE main content secara default di HTML, sebelum JS berjalan */
     .main-content {
         opacity: 0;
         visibility: hidden;
     }
     
-    /* Logika kursor kini sepenuhnya diatur oleh kelas 'visible' pada main-content */
     .cursor-dot,
     .cursor-outline {
         display: none;
@@ -33,7 +30,6 @@
         opacity: 1 !important;
     }
     
-    /* Ensure cursor is above everything */
     .cursor-dot {
         z-index: 1000000;
     }
@@ -53,7 +49,7 @@
         
         <div class="gate-center">
             <div class="gate-symbol"></div>
-            <button class="embark-btn" id="embarkBtn">
+            <button class="embark-btn" id="embarkBtn" aria-label="Enter Aetherlyn">
                 <i class="fas fa-door-open"></i> Embark The Journey
             </button>
             <p class="gate-instruction">
@@ -72,16 +68,15 @@
     </div>
 
     <div class="main-content" id="mainContent">
-        <div class="cursor-dot"></div>
-        <div class="cursor-outline"></div>
+        <div class="cursor-dot" aria-hidden="true"></div>
+        <div class="cursor-outline" aria-hidden="true"></div>
 
-        <nav>
+        <nav role="navigation">
             <div class="logo">
                 <h1 class="glow-text">World Of Aetherlyn</h1>
             </div>
             
-            <!-- Hamburger Menu for Mobile -->
-            <div class="hamburger" id="hamburger-menu">
+            <div class="hamburger" id="hamburger-menu" aria-label="Toggle menu">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -90,9 +85,8 @@
             <ul class="nav-links" id="nav-links">
                 <li><a href="https://worldofaetherlyn.web.id"><i class="fas fa-home active"></i> Home</a></li>
                 
-                <!-- Dropdown Patch Notes -->
                 <li class="dropdown mobile-dropdown">
-                    <a href="#" class="dropdown-toggle">
+                    <a href="#" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-code-branch"></i> Patch Notes
                     </a>
                     <ul class="dropdown-menu">
@@ -117,7 +111,6 @@
                         </a></li>
                     </ul>
                 </li>
-                <!-- End Dropdown -->
                 
                 <li><a href="https://worldbuilding.worldofaetherlyn.web.id"><i class="fas fa-globe-asia"></i> Worldbuilding</a></li>
                 <li><a href="https://codex.worldofaetherlyn.web.id"><i class="fas fa-archive"></i> Codex</a></li>
@@ -126,21 +119,22 @@
         </nav>
 
         <section class="hero">
-    <video 
-        playsinline 
-        autoplay 
-        muted 
-        loop 
-        poster="assets/placeholder.png" 
-        class="portal-video"
-    >
-        <source src="assets/hero.mp4" type="video/mp4">
-        Maaf, browser Anda tidak mendukung video HTML5.
-    </video>
-    <div class="corner-ornament top-left"></div>
-    <div class="corner-ornament top-right"></div>
-    <div class="corner-ornament bottom-left"></div>
-    <div class="corner-ornament bottom-right"></div>
+            <video 
+                playsinline 
+                autoplay 
+                muted 
+                loop 
+                poster="assets/placeholder.png" 
+                class="portal-video"
+                id="heroVideo"
+            >
+                <source src="assets/hero.mp4" type="video/mp4">
+                Your browser does not support HTML5 video.
+            </video>
+            <div class="corner-ornament top-left"></div>
+            <div class="corner-ornament top-right"></div>
+            <div class="corner-ornament bottom-left"></div>
+            <div class="corner-ornament bottom-right"></div>
             
             <div class="container">
                 <div class="hero-content">
@@ -255,7 +249,7 @@
         <footer>
             <div class="container">
                 <div class="footer-content">
-                    <p>© 2025 World of Aetherlyn. You have entered through the Ancient Gate.</p>
+                    <p>&copy; 2025 World of Aetherlyn. You have entered through the Ancient Gate.</p>
                     <p>Website Expansion Project v4.0 - The Gatekeeper's Edition</p>
                     <p class="footer-note">
                         <i class="fas fa-key"></i> This session has been recorded in the Gatekeeper's Log
