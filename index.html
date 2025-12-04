@@ -77,18 +77,48 @@
 
         <nav>
             <div class="logo">
-                <h1>World of Aetherlyn</h1>
+                <h1 class="glow-text">World Of Aetherlyn</h1>
             </div>
             
-            <div class="hamburger">
+            <!-- Hamburger Menu for Mobile -->
+            <div class="hamburger" id="hamburger-menu">
                 <span></span>
                 <span></span>
                 <span></span>
             </div>
-            
-            <ul class="nav-links">
-                <li><a href="#" class="active"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="https://worldofaetherlyn.web.id"><i class="fas fa-code-branch"></i> Patch Notes</a></li>
+
+            <ul class="nav-links" id="nav-links">
+                <li><a href="https://worldofaetherlyn.web.id"><i class="fas fa-home active"></i> Home</a></li>
+                
+                <!-- Dropdown Patch Notes -->
+                <li class="dropdown mobile-dropdown">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="fas fa-code-branch"></i> Patch Notes
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="https://patch.worldofaetherlyn.web.id" class="magic-link">
+                            <i class="fas fa-code-branch"></i> Notes Utama
+                        </a></li>
+                        <li class="divider"></li>
+                        <li><a href="https://patch.worldofaetherlyn.web.id/rank.html" class="magic-link">
+                            <i class="fas fa-star"></i> Rank
+                        </a></li>
+                        <li><a href="https://patch.worldofaetherlyn.web.id/races.html" class="magic-link">
+                            <i class="fas fa-users"></i> Races
+                        </a></li>
+                        <li><a href="https://patch.worldofaetherlyn.web.id/factions.html" class="magic-link">
+                            <i class="fas fa-layer-group"></i> Factions
+                        </a></li>
+                        <li><a href="https://patch.worldofaetherlyn.web.id/classes.html" class="magic-link">
+                            <i class="fas fa-award"></i> Classes
+                        </a></li>
+                        <li><a href="https://patch.worldofaetherlyn.web.id/systems.html" class="magic-link">
+                            <i class="fas fa-book"></i> Systems
+                        </a></li>
+                    </ul>
+                </li>
+                <!-- End Dropdown -->
+                
                 <li><a href="https://worldbuilding.worldofaetherlyn.web.id"><i class="fas fa-globe-asia"></i> Worldbuilding</a></li>
                 <li><a href="https://codex.worldofaetherlyn.web.id"><i class="fas fa-archive"></i> Codex</a></li>
                 <li><a href="https://catalog.worldofaetherlyn.web.id"><i class="fas fa-book"></i> Catalog</a></li>
@@ -96,10 +126,21 @@
         </nav>
 
         <section class="hero">
-            <div class="corner-ornament top-left"></div>
-            <div class="corner-ornament top-right"></div>
-            <div class="corner-ornament bottom-left"></div>
-            <div class="corner-ornament bottom-right"></div>
+    <video 
+        playsinline 
+        autoplay 
+        muted 
+        loop 
+        poster="assets/placeholder.png" 
+        class="portal-video"
+    >
+        <source src="assets/hero.mp4" type="video/mp4">
+        Maaf, browser Anda tidak mendukung video HTML5.
+    </video>
+    <div class="corner-ornament top-left"></div>
+    <div class="corner-ornament top-right"></div>
+    <div class="corner-ornament bottom-left"></div>
+    <div class="corner-ornament bottom-right"></div>
             
             <div class="container">
                 <div class="hero-content">
@@ -186,7 +227,7 @@
                         </p>
                     </a>
                     
-                    <a href="https://archive.worldofaetherlyn.web.id" class="portal-card archive">
+                    <a href="https://codex.worldofaetherlyn.web.id" class="portal-card archive">
                         <div class="portal-icon">
                             <i class="fas fa-archive"></i>
                         </div>
@@ -227,5 +268,4 @@
     <script src="js/gate-animation.js"></script>
     <script src="js/main.js"></script>
 </body>
-
 </html>
