@@ -457,7 +457,7 @@ const GateAnimation = (function() {
             elements.elementEarth
         ];
         
-        // STEP 1: Elements muncul
+        // 1: Elements muncul
         console.log('Step 4.1: Elements appearing...');
         elementsArray.forEach((element, index) => {
             if (!element) return;
@@ -469,7 +469,7 @@ const GateAnimation = (function() {
             }, index * 200); // Stagger effect
         });
         
-        // STEP 2: Elements bergerak ke tengah
+        // 2: Elements bergerak ke tengah
         setTimeout(() => {
             console.log('Step 4.2: Elements moving to center...');
             elementsArray.forEach((element) => {
@@ -479,7 +479,7 @@ const GateAnimation = (function() {
                 element.style.transform = 'translate(-50%, -50%) scale(1.3)';
             });
             
-            // STEP 3: Convergence center muncul
+            // 3: Convergence center muncul
             setTimeout(() => {
                 console.log('Step 4.3: Convergence center appearing...');
                 if (elements.convergenceCenter) {
@@ -488,7 +488,7 @@ const GateAnimation = (function() {
                     elements.convergenceCenter.style.transition = 'all 0.8s ease-out';
                 }
                 
-                // STEP 4: Elements menyatu ke center
+                // 4: Elements menyatu ke center
                 setTimeout(() => {
                     console.log('Step 4.4: Elements merging to center...');
                     elementsArray.forEach((element) => {
@@ -499,7 +499,7 @@ const GateAnimation = (function() {
                         element.style.transition = 'all 1s ease';
                     });
                     
-                    // STEP 5: Text muncul
+                    // 5: Text muncul
                     setTimeout(() => {
                         console.log('Step 4.5: Text appearing...');
                         if (elements.convergenceText) {
@@ -507,7 +507,7 @@ const GateAnimation = (function() {
                             elements.convergenceText.style.transition = 'opacity 0.8s ease-out';
                         }
                         
-                        // STEP 6: SEMUA FADE OUT BERSAMAAN
+                        // 6: SEMUA FADE OUT BERSAMAAN
                         setTimeout(() => {
                             console.log('Step 6: Everything fading out...');
                             
@@ -546,7 +546,7 @@ const GateAnimation = (function() {
                                 }, 800);
                             }
                             
-                            // STEP 7: SHOW MAIN CONTENT
+                            // 7: SHOW MAIN CONTENT
                             setTimeout(() => {
                                 console.log('Step 7: Showing main content...');
                                 showMainContent();
