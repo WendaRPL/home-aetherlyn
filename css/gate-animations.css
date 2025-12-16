@@ -7,8 +7,10 @@
     height: 100vh;
     z-index: 10000;
     background: var(--bg-primary);
-    /* FIX: Hapus delay 2s. Sekarang fade out cepat. */
-    transition: opacity 0.5s ease;
+    opacity: 1;
+    visibility: visible;
+    contain: strict;
+    will-change: opacity;
 }
 
 .gate-overlay.fade-out {
@@ -25,12 +27,25 @@
     background: linear-gradient(90deg, var(--bg-card), var(--bg-secondary));
     border: 4px solid var(--accent-earth);
     box-shadow: 
-        inset 0 0 50px rgba(157, 108, 52, 0.3),
-        0 0 80px rgba(157, 108, 52, 0.5);
-    transition: transform 2s cubic-bezier(0.77, 0, 0.175, 1);
+        inset 0 0 30px rgba(157, 108, 52, 0.2),
+        0 0 50px rgba(157, 108, 52, 0.3);
+    transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
     pointer-events: all;
-    /* ENHANCEMENT: Tambah denyutan cahaya gerbang */
-    animation: gatePulse 4s infinite alternate ease-in-out; 
+    will-change: transform, box-shadow;
+    transform: translateZ(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gate-left, .gate-right {
+        animation: none !important;
+        transition: opacity 0.3s ease !important;
+    }
+    
+    .gate-pulse,
+    .symbol-pulse,
+    .symbol-rotate {
+        animation: none !important;
+    }
 }
 
 /* ENHANCEMENT: Pseudo-element untuk efek energi/rune di tepi gerbang */
@@ -115,15 +130,15 @@
 }
 
 @keyframes gatePulse {
-    from {
+    0%, 100% { 
         box-shadow: 
-            inset 0 0 50px rgba(157, 108, 52, 0.3), 
-            0 0 80px rgba(157, 108, 52, 0.5);
+            inset 0 0 30px rgba(157, 108, 52, 0.2), 
+            0 0 50px rgba(157, 108, 52, 0.3); 
     }
-    to {
+    50% { 
         box-shadow: 
-            inset 0 0 60px rgba(157, 108, 52, 0.4), 
-            0 0 100px rgba(157, 108, 52, 0.8);
+            inset 0 0 40px rgba(157, 108, 52, 0.3), 
+            0 0 70px rgba(157, 108, 52, 0.5); 
     }
 }
 
@@ -215,15 +230,15 @@
     height: 100vh;
     z-index: 9999;
     opacity: 0;
-    /* FIX: Tambahkan Flexbox untuk centering sempurna */
     display: flex;
     justify-content: center;
     align-items: center;
-    
     pointer-events: none;
-    transition: opacity 1s ease;
-    /* display: none; akan diatur via JS untuk transisi */
+    transition: opacity 0.8s ease;
+    contain: strict;
+    will-change: opacity;
 }
+
 
 .elemental-convergence.active {
     opacity: 1;
@@ -243,11 +258,12 @@
 
 .element {
     position: absolute;
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     opacity: 0;
     transform: scale(0.1);
+    will-change: transform, opacity;
 }
 
 /* ENHANCEMENT: Efek getar/melayang pada elemen */
@@ -344,9 +360,18 @@
 
 /* === RESPONSIVE GATE ANIMATIONS === */
 @media (max-width: 768px) {
+    .gate-left::before,
+    .gate-right::after {
+        display: none;
+    }
+    
     .gate-symbol {
-        width: 80px;
-        height: 80px;
+        animation: symbolPulse 3s infinite;
+    }
+    
+    @keyframes symbolPulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
     }
     
     .embark-btn {
