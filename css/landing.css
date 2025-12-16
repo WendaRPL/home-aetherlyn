@@ -597,6 +597,13 @@ footer {
   margin-right: 0.5rem;
 }
 
+.heart-icon {
+  width: 16px;
+  height: 16px;
+  color: #ff5252;
+  animation: heartbeat 2s infinite;
+}
+
 /* === ANIMATIONS === */
 @keyframes pulse-glow {
   0% { text-shadow: 0 0 10px rgba(76, 201, 240, 0.5); }
@@ -683,6 +690,451 @@ footer {
     height: 1px;
     background: rgba(76, 201, 240, 0.1);
     margin: 0.5rem 1rem;
+}
+
+/* ===== REGISTRATION SECTION ===== */
+.registration-section {
+    padding: 6rem 0;
+    background: linear-gradient(135deg, rgba(10, 25, 47, 0.95) 0%, rgba(15, 35, 65, 0.9) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.registration-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.section-subtitle {
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Registration Flow */
+.registration-flow {
+    max-width: 900px;
+    margin: 0 auto 4rem;
+    position: relative;
+}
+
+.flow-step {
+    display: flex;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.step-marker {
+    position: relative;
+    width: 60px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.step-number {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    z-index: 2;
+    border: 3px solid var(--bg-dark);
+    box-shadow: 0 0 20px rgba(76, 201, 240, 0.3);
+}
+
+.step-line {
+    position: absolute;
+    top: 50px;
+    bottom: -3rem;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--accent-primary), transparent);
+    z-index: 1;
+}
+
+.flow-step:last-child .step-line {
+    display: none;
+}
+
+.step-content {
+    flex: 1;
+    background: rgba(20, 30, 48, 0.7);
+    border: 1px solid rgba(76, 201, 240, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-left: 2rem;
+    transition: all 0.3s ease;
+}
+
+.step-content:hover {
+    border-color: var(--accent-primary);
+    transform: translateX(5px);
+    box-shadow: 0 10px 30px rgba(76, 201, 240, 0.15);
+}
+
+.step-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.step-icon {
+    font-size: 1.8rem;
+    color: var(--accent-primary);
+    width: 50px;
+    height: 50px;
+    background: rgba(76, 201, 240, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.step-header h3 {
+    color: var(--text-light);
+    font-size: 1.4rem;
+    margin: 0;
+}
+
+.step-body p {
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+/* Step Actions */
+.step-action,
+.step-links {
+    margin-top: 1rem;
+}
+
+.step-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.telegram-btn {
+    background: #0088cc;
+    color: white;
+}
+
+.telegram-btn:hover {
+    background: #0077b5;
+    transform: translateY(-2px);
+}
+
+.hall-btn {
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    color: white;
+}
+
+.hall-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+}
+
+.records-btn {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+}
+
+.records-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+}
+
+.step-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(76, 201, 240, 0.1);
+    color: var(--accent-primary);
+    border: 1px solid rgba(76, 201, 240, 0.3);
+    border-radius: 8px;
+    text-decoration: none;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.step-link:hover {
+    background: rgba(76, 201, 240, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Special Elements */
+.form-guide {
+    background: rgba(76, 201, 240, 0.05);
+    border-left: 3px solid var(--accent-primary);
+    padding: 1rem;
+    border-radius: 0 8px 8px 0;
+    margin: 1rem 0;
+}
+
+.form-guide p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.rp-note {
+    background: rgba(236, 72, 153, 0.05);
+    border: 1px solid rgba(236, 72, 153, 0.2);
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.step-tip {
+    background: rgba(245, 158, 11, 0.05);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.guild-benefits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.benefit-tag {
+    background: rgba(76, 201, 240, 0.1);
+    color: var(--accent-primary);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid rgba(76, 201, 240, 0.2);
+}
+
+/* Final Step */
+.final-step .step-content {
+    background: linear-gradient(135deg, rgba(76, 201, 240, 0.05), rgba(236, 72, 153, 0.05));
+    border: 2px solid var(--accent-primary);
+}
+
+.final-cta {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+/* Registration Notes */
+.registration-notes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 4rem;
+}
+
+.important-note {
+    background: rgba(239, 68, 68, 0.05);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 12px;
+    padding: 2rem;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.note-icon {
+    font-size: 2rem;
+    color: #ef4444;
+    flex-shrink: 0;
+}
+
+.note-content h4 {
+    color: var(--text-light);
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.note-content ul {
+    color: var(--text-muted);
+    list-style: none;
+    padding: 0;
+}
+
+.note-content li {
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.note-content li::before {
+    content: '•';
+    color: var(--accent-primary);
+    position: absolute;
+    left: 0;
+}
+
+.quick-links {
+    background: rgba(20, 30, 48, 0.7);
+    border: 1px solid rgba(76, 201, 240, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.quick-links h4 {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.link-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.quick-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: rgba(76, 201, 240, 0.05);
+    border: 1px solid rgba(76, 201, 240, 0.1);
+    border-radius: 8px;
+    color: var(--accent-primary);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.quick-link:hover {
+    background: rgba(76, 201, 240, 0.1);
+    transform: translateY(-2px);
+    border-color: var(--accent-primary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 2rem;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .flow-step {
+        flex-direction: column;
+    }
+    
+    .step-marker {
+        width: 100%;
+        margin-bottom: 1rem;
+        flex-direction: row;
+        justify-content: center;
+    }
+    
+    .step-number {
+        margin-right: 1rem;
+    }
+    
+    .step-line {
+        position: absolute;
+        left: 50%;
+        top: 25px;
+        bottom: auto;
+        width: calc(100% - 100px);
+        height: 3px;
+        transform: translateX(-50%);
+        background: linear-gradient(to right, var(--accent-primary), transparent);
+    }
+    
+    .step-content {
+        margin-left: 0;
+        margin-top: 1rem;
+    }
+    
+    .step-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .step-icon {
+        margin-bottom: 0.5rem;
+    }
+    
+    .link-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .important-note {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .note-icon {
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .step-btn,
+    .step-link {
+        width: 100%;
+        justify-content: center;
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+    
+    .step-links {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .guild-benefits {
+        justify-content: center;
+    }
 }
 
 /* === RESPONSIVE === */
