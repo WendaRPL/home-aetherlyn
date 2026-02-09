@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>World of Aetherlyn - Komunitas Fantasi Roleplay</title>
-    <link rel="icon" type="image/x-icon" href="logo.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/landing.css">
     <link rel="stylesheet" href="css/gate-animations.css">
+    <link rel="icon" type="image/x-icon" href="logo.ico">
 </head>
 <style>
     body {
@@ -91,9 +91,6 @@
                         <i class="fas fa-code-branch"></i> Patch Notes
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="https://patch.worldofaetherlyn.web.id" class="magic-link">
-                            <i class="fas fa-code-branch"></i> Notes Utama
-                        </a></li>
                         <li><a href="https://patch.worldofaetherlyn.web.id/rank.html" class="magic-link">
                             <i class="fas fa-star"></i> Rank
                         </a></li>
@@ -125,9 +122,8 @@
                 loop 
                 poster="assets/placeholder.png" 
                 class="portal-video"
-                id="heroVideo"
-            >
-                <source src="assets/placeholder.png" type="image/png">
+                id="heroVideo">
+                <source src="assets/placeholder.png" type="png">
                 Your browser does not support HTML5 video.
             </video>
             <div class="corner-ornament top-left"></div>
@@ -260,8 +256,109 @@
                             <div class="step-body">
                                 <p>Mengisi formulir karakter sesuai aturan yang berlaku. Pastikan data lengkap dan sesuai dengan lore dunia Aetherlyn.</p>
                                 <div class="form-guide">
-                                    <p><i class="fas fa-info-circle"></i> Download template formulir dari Aether Gate</p>
+                                    <p><i class="fas fa-info-circle"></i> Template formulir pendaftaran karakter</p>
+                                    <button class="copy-template-btn" id="copyTemplateBtn">
+                                        <i class="fas fa-copy"></i> Copy Template
+                                    </button>
                                 </div>
+                                
+                                <!-- Hidden template text -->
+                                <textarea id="templateText" style="position: absolute; left: -9999px;" readonly>┈─────┈━═⏣═━┈─────┈
+         *| ADVENTURER ID |*
+┈─────┈━═⏣═━┈─────┈
+
+
+*┉ꕥ✧⃝   Character Information*
+*⏤͟͟͞͞╺╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾┈*
+
+┊❏ Name :
+┊❏ Gender :
+┊❏ Race :
+┊❏ Age :
+┊❏ Faction :
+      ╰ Element :
+┊❏ Class :
+      ╰ Role :
+┊❏ Guild / Clan :
+┊❏ Job :
+┊❏ Title [Equip] : _Max 3_
+┊❏ Title :
+
+*┉ꕥ✧⃝   Character Status*
+*⏤͟͟͞͞╺╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾┈*
+
+┊❏ EXP : … / 1.500
+┊❏ Level : 1
+┊❏ Rank : Novus [F]
+
+*[ Stats ]*
+
+┊❏ HP : 5.000
+┊❏ STR : 5.000
+┊❏ INT : 5.000
+┊❏ P.DEF : 5.000
+┊❏ M.DEF : 5.000
+┊❏ AGI : 5.000
+┊❏ MANA : 5.000
+
+*┉ꕥ✧⃝   Equipment List*
+*⏤͟͟͞͞╺╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾┈*
+
+*[ Equipments ]*
+
+┊❏ Hand [1] :
+┊❏ Hand [2] :
+┊❏ Hand [3] : _Zevaria [D]_
+┊❏ Head :
+┊❏ Body :
+┊❏ Foot :
+
+*[ Accessories ]*
+
+┊❏ Item 1 :
+┊❏ Item 2 : _Zevaria [D]_
+
+*[ Additional Item ]*
+
+┊❏ Item 1 :
+┊❏ Item 2 : _Elrion [C]_
+
+*┉ꕥ✧⃝   Character Ability*
+*⏤͟͟͞͞╺╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾┈*
+
+*[ Traits ]*
+_Unique Passive / Signature Effect_
+
+*[ Normal Skill ]*
+1. 
+2. 
+3. 
+
+*[ Ultimate ]*
+1. 
+
+*┉ꕥ✧⃝   Characterism*
+*⏤͟͟͞͞╺╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾┈*
+
+┊❏ Appearance :
+┊❏ Personality :
+┊❏ Likes :
+┊❏ Dislikes :
+┊❏ Personal Item : _No Effect_
+
+┊❏ Character Quotes : _[...]_
+
+*┉ꕥ✧⃝   Character Inventory*
+*⏤͟͟͞͞╺╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾┈*
+
+1. 
+2. 
+[ Max. 5]
+
+*┉ꕥ✧⃝   Form Apporoval*
+*⏤͟͟͞͞╺╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾┈*
+
+┊❏ Acc by : …</textarea>
                             </div>
                         </div>
                     </div>
@@ -322,7 +419,7 @@
                             <div class="step-body">
                                 <p>Setelah pendaftaran selesai, letakkan formulir yang sudah diperbaharui ke grup <strong>Aether Records</strong> untuk arsip resmi.</p>
                                 <div class="step-action">
-                                    <a href="https://chat.whatsapp.com/DFWllP7Xgu0EirCGRGwZzC?mode=hqrc" class="step-btn records-btn">
+                                    <a href="https://t.me/your-aether-records-link" target="_blank" class="step-btn records-btn">
                                         <i class="fas fa-archive"></i> Aether Records
                                     </a>
                                 </div>
@@ -467,20 +564,8 @@
         </footer>
     </div>
 
+    <script src="js/performance.js"></script>
     <script src="js/gate-animation.js"></script>
     <script src="js/main.js"></script>
 </body>
-
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
