@@ -405,4 +405,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
     MainApp.initScrollAnimations();
     MainApp.initContentFadeIn();
+    
+    // === COPY TEMPLATE FUNCTIONALITY ===
+    initCopyTemplate();
 });
+
+// Copy Template Function
+function initCopyTemplate() {
+    const copyBtn = document.getElementById('copyTemplateBtn');
+    const templateText = document.getElementById('templateText');
+    
+    if (!copyBtn || !templateText) return;
+    
+    copyBtn.addEventListener('click', function() {
+        // Select and copy text
+        templateText.select();
+        templateText.setSelectionRange(0, 99999); // For mobile
+        
+        // Copy to clipboard using modern API
+        navigator.clipboard.writeText(templateText.value).then(function() {
+            // Success feedback
+            showCopySuccess(copyBtn);
+        }).catch(function(err) {
+            // Fallback for older browsers
+            try {
+                document.execCommand('copy');
+                showCopySuccess(copyBtn);
+            } catch(e) {
+                alert('Gagal menyalin template. Silakan copy manual.');
+                console.error('Copy failed:', e);
+            }
+        });
+    });
+}
+
+function showCopySuccess(button) {
+    const originalHTML = button.innerHTML;
+    
+    // Add success state
+    button.classList.add('copied');
+    button.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
+    
+    // Reset after 2 seconds
+    setTimeout(function() {
+        button.classList.remove('copied');
+        button.innerHTML = originalHTML;
+    }, 2000);
+}
