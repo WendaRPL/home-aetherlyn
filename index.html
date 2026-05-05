@@ -3,577 +3,845 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>World of Aetherlyn - Komunitas Fantasi Roleplay</title>
+    <title>World of Aetherlyn — The Final Chapter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/landing.css">
-    <link rel="stylesheet" href="css/gate-animations.css">
-    <link rel="icon" type="image/x-icon" href="logo.ico">
+    <style>
+        :root {
+            --gold: #c9a84c;
+            --gold-light: #e8c96a;
+            --gold-dim: #7a5f28;
+            --ember: #ff6b35;
+            --ice: #7ecff5;
+            --bg: #04060d;
+            --text: #e8dcc8;
+            --text-dim: #8a7a62;
+            --accent: #4cc9f0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'EB Garamond', Georgia, serif;
+            overflow: hidden;
+            cursor: default;
+        }
+
+        /* ── STARFIELD ── */
+        #starfield {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ── PARTICLES ── */
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            animation: floatUp linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes floatUp {
+            0%   { transform: translateY(0) scale(1); opacity: 0; }
+            10%  { opacity: 0.8; }
+            90%  { opacity: 0.4; }
+            100% { transform: translateY(-100vh) scale(0.3); opacity: 0; }
+        }
+
+        /* ── VIGNETTE ── */
+        .vignette {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(4,6,13,0.85) 100%);
+            pointer-events: none;
+        }
+
+        /* ── TOP SEAL ── */
+        #topSeal {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2.5rem 1rem 1.5rem;
+            background: linear-gradient(to bottom, rgba(4,6,13,1) 60%, transparent);
+            opacity: 0;
+            animation: fadeIn 2s ease 0.5s forwards;
+        }
+
+        .seal-line {
+            width: 260px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+            margin: 0.5rem 0;
+        }
+
+        .seal-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: clamp(1rem, 3vw, 1.6rem);
+            color: var(--gold);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(201,168,76,0.5);
+        }
+
+        .seal-sub {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(0.65rem, 1.5vw, 0.8rem);
+            color: var(--text-dim);
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            margin-top: 0.25rem;
+        }
+
+        /* ── SCROLL CONTAINER ── */
+        #scrollWrap {
+            position: fixed;
+            inset: 0;
+            z-index: 5;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Perbaikan utama agar bisa di-scroll */
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        #creditScroll {
+            width: min(680px, 90%);
+            padding: 40vh 2rem 30vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+            animation: scrollUp var(--scroll-duration, 60s) linear 1s forwards;
+        }
+
+        @keyframes scrollUp {
+            from { transform: translateY(0); }
+            to   { transform: translateY(calc(-100% + 100vh)); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        /* ── CREDIT BLOCKS ── */
+        .credit-block {
+            width: 100%;
+            text-align: center;
+            padding: 2.5rem 1rem;
+            position: relative;
+        }
+
+        .credit-block + .credit-block {
+            margin-top: 1.5rem;
+        }
+
+        /* Opening poem */
+        .poem-block {
+            padding: 4rem 1rem;
+            font-style: italic;
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            line-height: 2;
+            color: var(--text-dim);
+        }
+
+        .poem-block .poem-line {
+            display: block;
+            opacity: 0.9;
+        }
+
+        .poem-block .poem-line.gold {
+            color: var(--gold-light);
+            font-weight: 500;
+            font-size: 1.1em;
+        }
+
+        /* Divider ornament */
+        .ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1.5rem 0;
+            width: 100%;
+        }
+
+        .ornament-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold-dim));
+        }
+
+        .ornament-line.right {
+            background: linear-gradient(to left, transparent, var(--gold-dim));
+        }
+
+        .ornament-gem {
+            width: 8px;
+            height: 8px;
+            background: var(--gold);
+            transform: rotate(45deg);
+            box-shadow: 0 0 8px var(--gold);
+        }
+
+        /* Section heading */
+        .section-heading {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: clamp(0.75rem, 2vw, 1rem);
+            color: var(--gold);
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 15px rgba(201,168,76,0.4);
+        }
+
+        /* Role label */
+        .role-label {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(0.6rem, 1.5vw, 0.75rem);
+            color: var(--text-dim);
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+        }
+
+        /* Name */
+        .credit-name {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .credit-name.hero-name {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: clamp(1.3rem, 4vw, 2rem);
+            color: var(--gold-light);
+            text-shadow: 0 0 30px rgba(232,201,106,0.4);
+        }
+
+        /* Name list grid */
+        .name-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 0.8rem 2rem;
+            width: 100%;
+            padding: 0.5rem 0;
+            font-family: 'Cinzel', serif;
+            font-size: clamp(0.8rem, 1.8vw, 1rem);
+            color: var(--text);
+            line-height: 1.8;
+            text-align: center;
+        }
+
+        /* Story highlight box */
+        .highlight-box {
+            border: 1px solid var(--gold-dim);
+            border-radius: 2px;
+            padding: 2rem 2.5rem;
+            margin: 1rem 0;
+            background: rgba(201,168,76,0.04);
+            position: relative;
+        }
+
+        .highlight-box::before,
+        .highlight-box::after {
+            content: '✦';
+            position: absolute;
+            color: var(--gold-dim);
+            font-size: 0.7rem;
+        }
+
+        .highlight-box::before { top: 0.5rem; left: 0.7rem; }
+        .highlight-box::after  { bottom: 0.5rem; right: 0.7rem; }
+
+        .highlight-text {
+            font-style: italic;
+            font-size: clamp(0.95rem, 2.2vw, 1.15rem);
+            line-height: 1.9;
+            color: var(--text);
+        }
+
+        /* Big farewell text */
+        .farewell-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: clamp(1.8rem, 6vw, 3.5rem);
+            color: var(--gold-light);
+            text-shadow: 0 0 60px rgba(232,201,106,0.5), 0 0 120px rgba(232,201,106,0.2);
+            line-height: 1.3;
+            letter-spacing: 0.05em;
+        }
+
+        .farewell-sub {
+            font-style: italic;
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            color: var(--text-dim);
+            margin-top: 1rem;
+            line-height: 1.8;
+        }
+
+        /* Element badge */
+        .element-row {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        .el-badge {
+            font-family: 'Cinzel', serif;
+            font-size: 0.7rem;
+            letter-spacing: 0.25em;
+            padding: 0.35rem 0.9rem;
+            border-radius: 2px;
+            text-transform: uppercase;
+        }
+
+        .el-badge.fire  { border: 1px solid #ff6b35; color: #ff8c5a; background: rgba(255,107,53,0.1); }
+        .el-badge.water { border: 1px solid #4cc9f0; color: #7ecff5; background: rgba(76,201,240,0.1); }
+        .el-badge.wind  { border: 1px solid #90e0ef; color: #b5eaf5; background: rgba(144,224,239,0.1); }
+        .el-badge.earth { border: 1px solid #9d6c34; color: #c49a5e; background: rgba(157,108,52,0.1); }
+
+        /* Year stamp */
+        .year-stamp {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: clamp(3rem, 12vw, 7rem);
+            color: rgba(201,168,76,0.08);
+            letter-spacing: 0.1em;
+            line-height: 1;
+            margin: 2rem 0;
+            user-select: none;
+        }
+
+        /* Final seal */
+        .final-seal {
+            padding: 5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .seal-emblem {
+            width: 90px;
+            height: 90px;
+            border: 2px solid var(--gold-dim);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: sealRotate 20s linear infinite;
+        }
+
+        .seal-emblem::before {
+            content: '';
+            position: absolute;
+            inset: 6px;
+            border: 1px solid rgba(201,168,76,0.3);
+            border-radius: 50%;
+        }
+
+        .seal-emblem i {
+            font-size: 2rem;
+            color: var(--gold);
+            animation: sealRotate 20s linear infinite reverse;
+        }
+
+        @keyframes sealRotate {
+            to { transform: rotate(360deg); }
+        }
+
+        .final-text {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            color: var(--text-dim);
+            letter-spacing: 0.3em;
+            text-align: center;
+            line-height: 2;
+        }
+
+        .copyright {
+            font-size: 0.75rem;
+            color: rgba(138,122,98,0.5);
+            letter-spacing: 0.2em;
+        }
+
+        /* ── BOTTOM GRADIENT ── */
+        .bottom-fade {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            height: 120px;
+            background: linear-gradient(to top, var(--bg) 40%, transparent);
+            z-index: 8;
+            pointer-events: none;
+        }
+
+        /* ── SKIP BUTTON ── */
+        #skipBtn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 20;
+            background: rgba(201,168,76,0.1);
+            border: 1px solid var(--gold-dim);
+            color: var(--text-dim);
+            font-family: 'Cinzel', serif;
+            font-size: 0.7rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeIn 1s ease 4s forwards;
+        }
+
+        #skipBtn:hover {
+            background: rgba(201,168,76,0.2);
+            color: var(--gold);
+            border-color: var(--gold);
+        }
+
+        /* ── OUTRO OVERLAY ── */
+        #outroOverlay {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: var(--bg);
+            opacity: 0;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            transition: opacity 1.5s ease;
+        }
+
+        #outroOverlay.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .outro-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: clamp(1.2rem, 4vw, 2.2rem);
+            color: var(--gold-light);
+            text-align: center;
+            text-shadow: 0 0 40px rgba(232,201,106,0.5);
+            opacity: 0;
+            animation: none;
+        }
+
+        #outroOverlay.show .outro-title {
+            animation: fadeIn 1.5s ease 0.3s forwards;
+        }
+
+        .outro-sub {
+            font-style: italic;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            color: var(--text-dim);
+            text-align: center;
+            opacity: 0;
+        }
+
+        #outroOverlay.show .outro-sub {
+            animation: fadeIn 1.5s ease 1s forwards;
+        }
+
+        @media (max-width: 480px) {
+            #creditScroll { width: 95%; padding: 40vh 1rem 30vh; }
+            .highlight-box { padding: 1.5rem 1.2rem; }
+            #skipBtn { bottom: 1rem; right: 1rem; }
+        }
+    </style>
 </head>
-<style>
-    body {
-        overflow: hidden;
-        cursor: none;
-    }
-    
-    .main-content {
-        opacity: 0;
-        visibility: hidden;
-    }
-    
-    .cursor-dot,
-    .cursor-outline {
-        display: none;
-    }
-    
-    .main-content.visible ~ .cursor-dot,
-    .main-content.visible ~ .cursor-outline {
-        display: block !important;
-        opacity: 1 !important;
-    }
-    
-    .cursor-dot {
-        z-index: 1000000;
-    }
-    
-    .cursor-outline {
-        z-index: 999999;
-    }
-</style>
 <body>
-    <div class="gate-overlay" id="gateOverlay">
-        <div class="gate-left" id="gateLeft">
-            <div class="gate-detail"></div>
-        </div>
-        <div class="gate-right" id="gateRight">
-            <div class="gate-detail"></div>
-        </div>
-        
-        <div class="gate-center">
-            <div class="gate-symbol"></div>
-            <button class="embark-btn" id="embarkBtn" aria-label="Enter Aetherlyn">
-                <i class="fas fa-door-open"></i> Embark The Journey
-            </button>
-            <p class="gate-instruction">
-                Click to enter the world of Aetherlyn
+
+<!-- Starfield canvas -->
+<canvas id="starfield"></canvas>
+
+<!-- Particles -->
+<div id="particles"></div>
+
+<!-- Vignette -->
+<div class="vignette"></div>
+
+<!-- Top title seal -->
+<div id="topSeal">
+    <div class="seal-line"></div>
+    <div class="seal-title">World of Aetherlyn</div>
+    <div class="seal-sub">The Final Chapter</div>
+    <div class="seal-line"></div>
+</div>
+
+<!-- SCROLL CREDITS -->
+<div id="scrollWrap">
+<div id="creditScroll">
+
+    <!-- Opening poem -->
+    <div class="credit-block poem-block">
+        <span class="poem-line">Gerbang telah tertutup.</span>
+        <span class="poem-line">Elemen telah kembali ke asalnya.</span>
+        <span class="poem-line gold">Namun kisah yang kalian tulis —</span>
+        <span class="poem-line gold">tidak pernah bisa dihapus dari Aether.</span>
+    </div>
+
+    <div class="ornament">
+        <div class="ornament-line"></div>
+        <div class="ornament-gem"></div>
+        <div class="ornament-line right"></div>
+    </div>
+
+    <!-- Thank you message -->
+    <div class="credit-block">
+        <div class="highlight-box">
+            <p class="highlight-text">
+                Kepada setiap jiwa yang pernah menginjakkan kaki di tanah Aetherlyn,
+                yang merajut cerita di meja bundar, yang memberi warna pada dunia ini —
+                <em>terima kasih.</em> Kalian bukan sekadar pemain.
+                Kalian adalah Aetherlyn itu sendiri.
             </p>
         </div>
     </div>
 
-    <div class="elemental-convergence" id="elementalConvergence">
-        <div class="element fire" id="elementFire"></div>
-        <div class="element water" id="elementWater"></div>
-        <div class="element wind" id="elementWind"></div>
-        <div class="element earth" id="elementEarth"></div>
-        <div class="convergence-center" id="convergenceCenter"></div>
-        <div class="convergence-text" id="convergenceText"><strong>[System : Transmitted to the new world]</strong></div>
+    <div class="ornament">
+        <div class="ornament-line"></div>
+        <div class="ornament-gem"></div>
+        <div class="ornament-line right"></div>
     </div>
 
-    <div class="main-content" id="mainContent">
-        <div class="cursor-dot" aria-hidden="true"></div>
-        <div class="cursor-outline" aria-hidden="true"></div>
-
-        <nav role="navigation">
-            <div class="logo">
-                <h1 class="glow-text">World Of Aetherlyn</h1>
-            </div>
-            
-            <div class="hamburger" id="hamburger-menu" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-
-            <ul class="nav-links" id="nav-links">
-                <li><a href="https://worldofaetherlyn.web.id"><i class="fas fa-home active"></i> Home</a></li>
-                
-                <li class="dropdown mobile-dropdown">
-                    <a href="#" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-code-branch"></i> Patch Notes
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="https://patch.worldofaetherlyn.web.id" class="active"><i class="fas fa-code-branch"></i> Notes Utama</a></li>
-                        <li class="divider"></li>
-                        <li><a href="https://patch.worldofaetherlyn.web.id/rank.html" class="magic-link">
-                            <i class="fas fa-star"></i> Rank
-                        </a></li>
-                        <li><a href="https://patch.worldofaetherlyn.web.id/races.html" class="magic-link">
-                            <i class="fas fa-users"></i> Races
-                        </a></li>
-                        <li><a href="https://patch.worldofaetherlyn.web.id/factions.html" class="magic-link">
-                            <i class="fas fa-layer-group"></i> Factions
-                        </a></li>
-                        <li><a href="https://patch.worldofaetherlyn.web.id/classes.html" class="magic-link">
-                            <i class="fas fa-award"></i> Classes
-                        </a></li>
-                        <li><a href="https://patch.worldofaetherlyn.web.id/systems.html" class="magic-link">
-                            <i class="fas fa-book"></i> Systems
-                        </a></li>
-                    </ul>
-                </li>
-                
-                <li><a href="https://worldbuilding.worldofaetherlyn.web.id"><i class="fas fa-globe-asia"></i> Worldbuilding</a></li>
-                <li><a href="https://codex.worldofaetherlyn.web.id"><i class="fas fa-archive"></i> Codex</a></li>
-            </ul>
-        </nav>
-
-        <section class="hero">
-            <video 
-                playsinline 
-                autoplay 
-                muted 
-                loop 
-                poster="assets/placeholder.png" 
-                class="portal-video"
-                id="heroVideo">
-                <source src="assets/placeholder.png" type="png">
-                Your browser does not support HTML5 video.
-            </video>
-            <div class="corner-ornament top-left"></div>
-            <div class="corner-ornament top-right"></div>
-            <div class="corner-ornament bottom-left"></div>
-            <div class="corner-ornament bottom-right"></div>
-            
-            <div class="container">
-                <div class="hero-content">
-                    <div class="title-wrapper">
-                        <div class="title-ornament"></div>
-                        <h1 class="hero-title pulse-glow">You Have Entered Aetherlyn</h1>
-                    </div>
-                    
-                    <p class="hero-quote">
-                        <span class="quote-mark left">"</span>
-                        The gate has opened, the elements have converged. Your story begins here.
-                        <span class="quote-mark right">"</span>
-                    </p>
-                    
-                    <div class="hero-actions">
-                        <a href="#welcome" class="cta-button primary">
-                            <i class="fas fa-scroll"></i> Begin Your Tale
-                        </a>
-                        <a href="#portals" class="cta-button secondary">
-                            <i class="fas fa-compass"></i> Explore Portals
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="welcome" class="welcome-section">
-            <div class="container">
-                <h2 class="welcome-title">Your Journey Awaits</h2>
-                
-                <div class="welcome-content">
-                    <div class="welcome-text">
-                        <h2><strong>[System]</strong></h2>
-
-                        <p>Selamat datang, petualang pemberani. Anda telah melewati Gerbang Kuno Aetherlyn, menyaksikan konvergensi kekuatan elemental, dan kini berdiri di awal kisah epik Anda sendiri.</p>
-                        
-                        <p>Ini lebih dari sekadar situs web—ini adalah portal hidup menuju dunia yang diciptakan oleh para pemimpi, pendongeng, dan kreator. Setiap sudut menyimpan petualangan baru, setiap halaman mengungkap babak lain dalam kisah kolektif kita.</p>
-                        
-                        <p>Sebagai pendatang baru di dunia kami, Anda memiliki kesempatan unik untuk:</p>
-                        
-                        <ul class="welcome-list">
-                            <li><strong class="accent-primary">Menjelajahi</strong> lore dan sejarah yang kaya di Codex dan Worldbuilding kami</li>
-                            <li><strong class="accent-secondary">Berkontribusi</strong> pada narasi yang terus berkembang melalui event komunitas</li>
-                            <li><strong class="accent-wind">Temukan</strong> rahasia tersembunyi dan kisah-kisah terlupakan di Codex kami</li>
-                            <li><strong class="accent-earth">Bangun</strong> warisan Anda dalam Katalog karakter dan dunia yang komprehensif</li>
-                        </ul>
-                        
-                        <p>Gerbang di belakang Anda kini telah tertutup, tetapi pintu-pintu yang tak terhitung jumlahnya di depan menanti sentuhan Anda. Akankah Anda menjadi seorang penjelajah, pendongeng, pembangun, atau mungkin sesuatu yang sepenuhnya baru?</p>
-                        
-                        <p class="welcome-quote">
-                            "In Aetherlyn, every visitor becomes a creator, and every moment becomes a memory."
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-                <!-- Section Cara Mendaftar -->
-        <section id="registration" class="registration-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <i class="fas fa-scroll"></i> Alur Pendaftaran Petualang
-                    </h2>
-                    <p class="section-subtitle">Ikuti langkah-langkah ini untuk menjadi Petualang resmi di Aetherlyn</p>
-                </div>
-                
-                <div class="registration-flow">
-                    <!-- Step 1 -->
-                    <div class="flow-step">
-                        <div class="step-marker">
-                            <div class="step-number">1</div>
-                            <div class="step-line"></div>
-                        </div>
-                        <div class="step-content">
-                            <div class="step-header">
-                                <i class="fas fa-door-open step-icon"></i>
-                                <h3>Masuk ke Aether Gate</h3>
-                            </div>
-                            <div class="step-body">
-                                <p>Petualang dipersilahkan untuk memasuki grup <strong>Aether Gate</strong> untuk menerima pengarahan dan pembelajaran dasar dunia Aetherlyn.</p>
-                                <div class="step-action">
-                                    <a href="https://chat.whatsapp.com/L4JhXJWz4ZOCs4RC4VtkK6" target="_blank" class="step-btn telegram-btn">
-                                        <i class="fab fa-whatsapp"></i> Aether Gate
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Step 2 -->
-                    <div class="flow-step">
-                        <div class="step-marker">
-                            <div class="step-number">2</div>
-                            <div class="step-line"></div>
-                        </div>
-                        <div class="step-content">
-                            <div class="step-header">
-                                <i class="fas fa-book step-icon"></i>
-                                <h3>Pelajari Dunia Aetherlyn</h3>
-                            </div>
-                            <div class="step-body">
-                                <p>Sebelum melakukan pendaftaran, pelajari Patch Note untuk memahami lore, aturan, dan sistem yang berlaku.</p>
-                                <div class="step-links">
-                                    <a href="https://patch.worldofaetherlyn.web.id" class="step-link">
-                                        <i class="fas fa-code-branch"></i> Patch Notes
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Step 3 -->
-                    <div class="flow-step">
-                        <div class="step-marker">
-                            <div class="step-number">3</div>
-                            <div class="step-line"></div>
-                        </div>
-                        <div class="step-content">
-                            <div class="step-header">
-                                <i class="fas fa-file-alt step-icon"></i>
-                                <h3>Isi Formulir Pendaftaran</h3>
-                            </div>
-                            <div class="step-body">
-                                <p>Mengisi formulir karakter sesuai aturan yang berlaku. Pastikan data lengkap dan sesuai dengan lore dunia Aetherlyn.</p>
-                                <div class="form-guide">
-                                    <p><i class="fas fa-info-circle"></i> Template formulir pendaftaran karakter</p>
-                                    <button class="copy-template-btn" id="copyTemplateBtn">
-                                        <i class="fas fa-copy"></i> Copy Template
-                                    </button>
-                                </div>
-                                
-                                <!-- Hidden template text -->
-                                <textarea id="templateText" style="position: absolute; left: -9999px;" readonly>┈─────┈━═⏣═━┈─────┈
-         *| ADVENTURER ID |*
-┈─────┈━═⏣═━┈─────┈
-
-
-*┉ꕥ✧⃝   Character Information*
-*⏤͟͟͞͞╺╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾┈*
-
-┊❏ Name :
-┊❏ Gender :
-┊❏ Race :
-┊❏ Age :
-┊❏ Faction :
-      ╰ Element :
-┊❏ Class :
-      ╰ Role :
-┊❏ Guild / Clan :
-┊❏ Job :
-┊❏ Title [Equip] : _Max 3_
-┊❏ Title :
-
-*┉ꕥ✧⃝   Character Status*
-*⏤͟͟͞͞╺╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾┈*
-
-┊❏ EXP : … / 1.500
-┊❏ Level : 1
-┊❏ Rank : Novus [F]
-
-*[ Stats ]*
-
-┊❏ HP : 5.000
-┊❏ STR : 5.000
-┊❏ INT : 5.000
-┊❏ P.DEF : 5.000
-┊❏ M.DEF : 5.000
-┊❏ AGI : 5.000
-┊❏ MANA : 5.000
-
-*┉ꕥ✧⃝   Equipment List*
-*⏤͟͟͞͞╺╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾┈*
-
-*[ Equipments ]*
-
-┊❏ Hand [1] :
-┊❏ Hand [2] :
-┊❏ Hand [3] : _Zevaria [D]_
-┊❏ Head :
-┊❏ Body :
-┊❏ Foot :
-
-*[ Accessories ]*
-
-┊❏ Item 1 :
-┊❏ Item 2 : _Zevaria [D]_
-
-*[ Additional Item ]*
-
-┊❏ Item 1 :
-┊❏ Item 2 : _Elrion [C]_
-
-*┉ꕥ✧⃝   Character Ability*
-*⏤͟͟͞͞╺╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾┈*
-
-*[ Traits ]*
-_Unique Passive / Signature Effect_
-
-*[ Normal Skill ]*
-1. 
-2. 
-3. 
-
-*[ Ultimate ]*
-1. 
-
-*┉ꕥ✧⃝   Characterism*
-*⏤͟͟͞͞╺╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾┈*
-
-┊❏ Appearance :
-┊❏ Personality :
-┊❏ Likes :
-┊❏ Dislikes :
-┊❏ Personal Item : _No Effect_
-
-┊❏ Character Quotes : _[...]_
-
-*┉ꕥ✧⃝   Character Inventory*
-*⏤͟͟͞͞╺╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾┈*
-
-1. 
-2. 
-[ Max. 5]
-
-*┉ꕥ✧⃝   Form Apporoval*
-*⏤͟͟͞͞╺╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾┈*
-
-┊❏ Acc by : …</textarea>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Step 4 -->
-                    <div class="flow-step">
-                        <div class="step-marker">
-                            <div class="step-number">4</div>
-                            <div class="step-line"></div>
-                        </div>
-                        <div class="step-content">
-                            <div class="step-header">
-                                <i class="fas fa-check-circle step-icon"></i>
-                                <h3>Review di Aether Hall</h3>
-                            </div>
-                            <div class="step-body">
-                                <p>Menyerahkan formulir ke grup <strong>Aether Hall</strong> untuk di-review oleh Council of Elders. (Semi RP, boleh dalam roleplay ataupun tidak)</p>
-                                <div class="step-action">
-                                    <a href="https://chat.whatsapp.com/Cs7TqQ4etu1JjWxpIWqzlW" target="_blank" class="step-btn hall-btn">
-                                        <i class="fas fa-landmark"></i> Aether Hall
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Step 5 -->
-                    <div class="flow-step">
-                        <div class="step-marker">
-                            <div class="step-number">5</div>
-                            <div class="step-line"></div>
-                        </div>
-                        <div class="step-content">
-                            <div class="step-header">
-                                <i class="fas fa-user-shield step-icon"></i>
-                                <h3>Daftar di Serikat Petualang</h3>
-                            </div>
-                            <div class="step-body">
-                                <p>Setelah formulir di-acc, datang ke <strong>Serikat Petualang</strong> (secara RP) dan daftar sebagai petualang. Dapatkan senjata awal sesuai class dan pesangon.</p>
-                                <div class="rp-note">
-                                    <i class="fas fa-theater-masks"></i> <strong>Roleplay Required:</strong> Interaksi dengan NPC Resepsionis Serikat
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Step 6 -->
-                    <div class="flow-step">
-                        <div class="step-marker">
-                            <div class="step-number">6</div>
-                            <div class="step-line"></div>
-                        </div>
-                        <div class="step-content">
-                            <div class="step-header">
-                                <i class="fas fa-archive step-icon"></i>
-                                <h3>Arsip di Aether Records</h3>
-                            </div>
-                            <div class="step-body">
-                                <p>Setelah pendaftaran selesai, letakkan formulir yang sudah diperbaharui ke grup <strong>Aether Records</strong> untuk arsip resmi.</p>
-                                <div class="step-action">
-                                    <a href="https://t.me/your-aether-records-link" target="_blank" class="step-btn records-btn">
-                                        <i class="fas fa-archive"></i> Aether Records
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Step 7 -->
-                    <div class="flow-step">
-                        <div class="step-marker">
-                            <div class="step-number">7</div>
-                            <div class="step-line"></div>
-                        </div>
-                        <div class="step-content">
-                            <div class="step-header">
-                                <i class="fas fa-city step-icon"></i>
-                                <h3>Debut RP di Aetherion City</h3>
-                            </div>
-                            <div class="step-body">
-                                <p>Mulai debut RP di <strong>Kota Aetherion City</strong> sebagai petualang resmi. Gunakan pict dari character masing-masing.</p>
-                                <div class="step-tip">
-                                    <i class="fas fa-lightbulb"></i> <strong>Tip:</strong> Aetherion City adalah kota petualang, sempurna untuk memulai petualangan!
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Step 8 -->
-                    <div class="flow-step">
-                        <div class="step-marker">
-                            <div class="step-number">8</div>
-                            <div class="step-line"></div>
-                        </div>
-                        <div class="step-content">
-                            <div class="step-header">
-                                <i class="fas fa-users step-icon"></i>
-                                <h3>Berkenalan & Bergabung Guild</h3>
-                            </div>
-                            <div class="step-body">
-                                <p>Jangan lupa untuk saling berkenalan sesama petualang. Bergabunglah ke dalam <strong>Guild / Clan</strong> untuk mendapatkan keuntungan dan quest exclusive.</p>
-                                <div class="guild-benefits">
-                                    <span class="benefit-tag"><i class="fas fa-quest"></i> Quest Exclusive</span>
-                                    <span class="benefit-tag"><i class="fas fa-users"></i> Support System</span>
-                                    <span class="benefit-tag"><i class="fas fa-trophy"></i> Guild Rewards</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Step 9 -->
-                    <div class="flow-step final-step">
-                        <div class="step-marker">
-                            <div class="step-number">9</div>
-                            <div class="step-line"></div>
-                        </div>
-                        <div class="step-content">
-                            <div class="step-header">
-                                <i class="fas fa-mountain step-icon"></i>
-                                <h3>Menuju Puncak Aetherlyn</h3>
-                            </div>
-                            <div class="step-body">
-                                <p>Mulailah petualangan untuk menjadi kuat dan mendaki menuju puncak tertinggi Aetherlyn. Takdir menanti!</p>
-                                <div class="final-cta">
-                                    <a href="https://chat.whatsapp.com/EYqcKVlT8eOCkqYHjqzupK" class="cta-button primary large">
-                                        <i class="fas fa-play"></i> Mulai Petualangan
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="registration-notes">
-                    <div class="important-note">
-                        <div class="note-icon">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </div>
-                        <div class="note-content">
-                            <h4>Catatan Penting</h4>
-                            <ul>
-                                <li>Semua proses mengikuti aturan dan lore yang telah ditetapkan</li>
-                                <li>Durasi pendaftaran biasanya 1-3 hari tergantung antrian review</li>
-                                <li>Bantuan tersedia di grup Aether Gate untuk pertanyaan</li>
-                                <li>Pendaftaran gratis tanpa biaya apapun</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="portals" class="portals-section">
-            <div class="container">
-                <h2 class="section-title">
-                    <i class="fas fa-door-open"></i> Gateways to Adventure
-                </h2>
-                
-                <div class="portal-grid">
-                    <a href="https://worldofaetherlyn.web.id" class="portal-card patch">
-                        <div class="portal-icon">
-                            <i class="fas fa-code-branch"></i>
-                        </div>
-                        <h3>Patch Notes</h3>
-                        <p>Informasi tentang Patch, system, dan perubahan terbaru</p>
-                        <p class="portal-link">
-                            <i class="fas fa-external-link-alt"></i> Enter Portal
-                        </p>
-                    </a>
-                    
-                    <a href="https://worldbuilding.worldofaetherlyn.web.id" class="portal-card world">
-                        <div class="portal-icon">
-                            <i class="fas fa-globe-asia"></i>
-                        </div>
-                        <h3>Worldbuilding</h3>
-                        <p>Jelajahi setiap tempat, wilayah, dan realm tersembunyi.</p>
-                        <p class="portal-link">
-                            <i class="fas fa-external-link-alt"></i> Enter Portal
-                        </p>
-                    </a>
-                    
-                    <a href="https://codex.worldofaetherlyn.web.id" class="portal-card archive">
-                        <div class="portal-icon">
-                            <i class="fas fa-archive"></i>
-                        </div>
-                        <h3>Codex</h3>
-                        <p>Catatan sejarah, dan warisan leluhur.</p>
-                        <p class="portal-link">
-                            <i class="fas fa-external-link-alt"></i> Enter Portal
-                        </p>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <footer>
-            <div class="container">
-                <div class="footer-content">
-                    <p>&copy; 2025 Tróupe de Fools. You have entered through the Ancient Gate.</p>
-                    <p>Website Expansion Project v4.0 - The Gatekeeper's Edition</p>
-                    <p style="margin-top: 1rem; color: var(--accent-primary); font-size: 0.9rem;">
-                        ©® Tróupe de Fools
-                    </p>
-                </div>
-            </div>
-        </footer>
+    <!-- Founders / Admin -->
+    <div class="credit-block">
+        <div class="section-heading">⟡ The Gatekeepers ⟡</div>
+        <div class="role-label">Founder &amp; Pengelola Utama</div>
+        <div class="credit-name hero-name">Zathrian &amp; Tim Inti</div>
+        <p style="font-style:italic; color: var(--text-dim); font-size:0.95rem; margin-top:0.8rem; line-height:1.8;">
+            Yang menjaga gerbang tetap terbuka,<br>
+            yang membangun dunia dari nol,<br>
+            yang tidak tidur demi lore yang konsisten.
+        </p>
     </div>
 
-    <script src="js/performance.js"></script>
-    <script src="js/gate-animation.js"></script>
-    <script src="js/main.js"></script>
+    <div class="ornament">
+        <div class="ornament-line"></div>
+        <div class="ornament-gem"></div>
+        <div class="ornament-line right"></div>
+    </div>
+
+    <!-- Moderators -->
+    <div class="credit-block">
+        <div class="section-heading">⟡ The Wardens ⟡</div>
+        <div class="role-label">Moderator &amp; Game Master</div>
+        <p style="font-style:italic; color: var(--text-dim); font-size:0.9rem; margin-bottom:1.2rem; line-height:1.8;">
+            Penjaga keseimbangan dunia.<br>
+            Yang menghidupkan quest, event, dan lore dengan tangan mereka sendiri.
+        </p>
+        <div class="name-grid">
+            <span class="n">— Soma —</span>
+            <span class="n">— Svetlina —</span>
+            <span class="n">— Zathrian —</span>
+        </div>
+    </div>
+
+    <div class="ornament">
+        <div class="ornament-line"></div>
+        <div class="ornament-gem"></div>
+        <div class="ornament-line right"></div>
+    </div>
+
+    <!-- Worldbuilders -->
+    <div class="credit-block">
+        <div class="section-heading">⟡ The Chroniclers ⟡</div>
+        <div class="role-label">Worldbuilding &amp; Lore Writers</div>
+        <p style="font-style:italic; color: var(--text-dim); font-size:0.9rem; margin-bottom:1.2rem; line-height:1.8;">
+            Yang menulis sejarah sebelum ada yang mengalaminya.
+        </p>
+        <div class="name-grid">
+            <span class="n">— Zathrian —</span>
+            <span class="n">— Soma —</span>
+            <span class="n">— Svetlina —</span>
+            <span class="n">— Lucas —</span>
+            <span class="n">— Doctor (Pre-Amnesia) —</span>
+            <span class="n">— Nettolius —</span>
+            <span class="n">— Rafael —</span>
+        </div>
+    </div>
+
+    <div class="ornament">
+        <div class="ornament-line"></div>
+        <div class="ornament-gem"></div>
+        <div class="ornament-line right"></div>
+    </div>
+
+    <!-- All Players -->
+    <div class="credit-block">
+        <div class="section-heading">⟡ The Adventurers ⟡</div>
+        <div class="role-label">Seluruh Petualang Aetherlyn</div>
+        <p style="font-style:italic; color: var(--text-dim); font-size:0.9rem; margin-bottom:1.5rem; line-height:1.8;">
+            Dari rank terbawah hingga puncak tertinggi —<br>
+            setiap karakter yang pernah hadir meninggalkan jejaknya.
+        </p>
+        <div class="name-grid">
+            <span class="n">— Rei Kazehaya —</span>
+            <span class="n">— Zathrian Arka Dirgantara —</span>
+            <span class="n">— Doctor (Pre-Amnesia) —</span>
+            <span class="n">— Nettolius von Reistied —</span>
+            <span class="n">— Hinari Raikatsu —</span>
+            <span class="n">— Celestial Regina —</span>
+            <span class="n">— Syahrul Simon —</span>
+            <span class="n">— Elz Rodriguez —</span>
+            <span class="n">— Haanx —</span>
+            <span class="n">— Mist —</span>
+            <span class="n">— Emi Kirisaki —</span>
+            <span class="n">— Riyu Kanzaki —</span>
+            <span class="n">— Ayasaka F. Hamura —</span>
+            <span class="n">— Ren Aurethra —</span>
+            <span class="n">— Eru Spring —</span>
+            <span class="n">— Chevelure Raziel —</span>
+            <span class="n">— Zui Higanbana —</span>
+            <span class="n">— Willengston {100} Svetlina —</span>
+            <span class="n">— Lucas Hanz L.C —</span>
+            <span class="n">— Rafael Zenitch Cardinal —</span>
+            <span class="n">— Kaelrion Dzarven —</span>
+            <span class="n">— Obsidian —</span>
+            <span class="n">— Ace of Spade —</span>
+            <span class="n">— Nikto Crea Reigner —</span>
+            <span class="n">— Gale Harleyquin —</span>
+            <span class="n">— Shade Void —</span>
+            <span class="n">— Erin Caelwyn —</span>
+            <span class="n">— Mikaera Everly —</span>
+            <span class="n">— Airi Skywalker —</span>
+            <span class="n">— Mollen —</span>
+            <span class="n">— Floryn Rosse —</span>
+            <span class="n">— Thorne Braggson —</span>
+            <span class="n">— Kaito May Flins —</span>
+            <span class="n">— Vanitas Ethelred —</span>
+            <span class="n">— Natsu Redfox —</span>
+            <span class="n">— Daniel Ken —</span>
+            <span class="n">— Akumaru Percy —</span>
+            <span class="n">— Dan para petualang yang tak sempat disebut —</span>
+            
+        </div>
+    </div>
+
+    <div class="ornament">
+        <div class="ornament-line"></div>
+        <div class="ornament-gem"></div>
+        <div class="ornament-line right"></div>
+    </div>
+
+    <!-- Elemen tribute -->
+    <div class="credit-block">
+        <div class="section-heading">⟡ The Elements Rest ⟡</div>
+        <div style="margin: 1rem 0;">
+            <div class="element-row">
+                <span class="el-badge fire"><i class="fas fa-fire"></i> Fire</span>
+                <span class="el-badge water"><i class="fas fa-water"></i> Water</span>
+                <span class="el-badge wind"><i class="fas fa-wind"></i> Wind</span>
+                <span class="el-badge earth"><i class="fas fa-mountain"></i> Earth</span>
+            </div>
+        </div>
+        <p style="font-style:italic; color: var(--text-dim); font-size:0.95rem; line-height:1.9; margin-top:1rem;">
+            Empat elemen yang bersatu membentuk Aetherlyn.<br>
+            Kini mereka kembali tidur — menunggu waktu berikutnya<br>
+            dunia ini dibangunkan kembali.
+        </p>
+    </div>
+
+    <div class="ornament">
+        <div class="ornament-line"></div>
+        <div class="ornament-gem"></div>
+        <div class="ornament-line right"></div>
+    </div>
+
+    <!-- Special mentions -->
+    <div class="credit-block">
+        <div class="section-heading">⟡ Special Thanks ⟡</div>
+        <div class="highlight-box" style="margin-top:1rem;">
+            <p class="highlight-text">
+                Kepada yang pertama kali bergabung sebelum dunia ini punya nama.<br>
+                Kepada yang tetap bertahan saat komunitas sepi.<br>
+                Kepada yang membawa teman masuk ke dalam gerbang ini.<br><br>
+                <em>Kalian adalah alasan Aetherlyn pernah hidup.</em>
+            </p>
+        </div>
+    </div>
+
+    <div class="ornament">
+        <div class="ornament-line"></div>
+        <div class="ornament-gem"></div>
+        <div class="ornament-line right"></div>
+    </div>
+
+    <!-- Year stamp -->
+    <div class="credit-block">
+        <div class="year-stamp">2024</div>
+        <div class="role-label" style="margin-top:-1.5rem;">Tahun Aetherlyn Berdiri</div>
+    </div>
+
+    <!-- Farewell -->
+    <div class="credit-block" style="padding: 4rem 1rem;">
+        <div class="farewell-title">Sampai Jumpa,<br>Para Petualang.</div>
+        <div class="farewell-sub">
+            Gerbang mungkin tertutup.<br>
+            Tapi kenangan yang tertulis di sini<br>
+            akan selamanya ada di Aether.
+        </div>
+    </div>
+
+    <!-- Final seal -->
+    <div class="final-seal">
+        <div class="seal-emblem">
+            <i class="fas fa-star"></i>
+        </div>
+        <div class="final-text">
+            World of Aetherlyn<br>
+            <span style="letter-spacing:0.5em; font-size:0.7em;">THE GATEKEEPER'S EDITION</span>
+        </div>
+        <div class="copyright">
+            &copy; World of Aetherlyn · All stories remain in the Aether.
+        </div>
+    </div>
+
+</div><!-- /creditScroll -->
+</div><!-- /scrollWrap -->
+
+<div class="bottom-fade"></div>
+
+<button id="skipBtn" onclick="skipToEnd()">Skip ▸</button>
+
+<!-- Outro overlay -->
+<div id="outroOverlay">
+    <div class="seal-emblem" style="width:80px;height:80px;">
+        <i class="fas fa-star" style="font-size:1.8rem;"></i>
+    </div>
+    <div class="outro-title">Aetherlyn · Closed</div>
+    <div class="outro-sub">
+        Kisah telah usai.<br>Terima kasih telah menjadi bagian dari dunia ini.
+    </div>
+</div>
+
+<script>
+// ── STARFIELD ──
+(function() {
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function initStars(n) {
+        stars = [];
+        for (let i = 0; i < n; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 1.2 + 0.2,
+                a: Math.random(),
+                speed: Math.random() * 0.003 + 0.001,
+                phase: Math.random() * Math.PI * 2
+            });
+        }
+    }
+
+    function draw(t) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        stars.forEach(s => {
+            s.phase += s.speed;
+            const alpha = s.a * (0.5 + 0.5 * Math.sin(s.phase));
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(232,220,200,${alpha})`;
+            ctx.fill();
+        });
+        requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', () => { resize(); initStars(200); });
+    resize();
+    initStars(200);
+    requestAnimationFrame(draw);
+})();
+
+// ── PARTICLES ──
+(function() {
+    const container = document.getElementById('particles');
+    const colors = ['#c9a84c','#ff6b35','#4cc9f0','#e8c96a','#90e0ef'];
+    const count = 18;
+
+    for (let i = 0; i < count; i++) {
+        const el = document.createElement('div');
+        el.className = 'particle';
+        const size = Math.random() * 3 + 1;
+        el.style.cssText = `
+            width: ${size}px; height: ${size}px;
+            left: ${Math.random() * 100}%;
+            bottom: ${-10 - Math.random() * 20}%;
+            background: ${colors[Math.floor(Math.random() * colors.length)]};
+            animation-duration: ${12 + Math.random() * 20}s;
+            animation-delay: ${Math.random() * 15}s;
+            box-shadow: 0 0 ${size * 2}px currentColor;
+        `;
+        container.appendChild(el);
+    }
+})();
+
+// ── SCROLL DURATION & ANIMATION INIT ──
+(function() {
+    window.addEventListener('load', () => {
+        const scroll = document.getElementById('creditScroll');
+        
+        setTimeout(() => {
+            const totalH = scroll.scrollHeight;
+            const viewH = window.innerHeight;
+            const px_per_sec = 50; 
+            const duration = Math.max(20, (totalH - viewH) / px_per_sec);
+            
+            // Menyematkan durasi ke variabel CSS agar animasi berjalan alami
+            scroll.style.setProperty('--scroll-duration', duration + 's');
+
+            // Memicu outro otomatis setelah scroll selesai
+            setTimeout(triggerOutro, (duration + 3) * 1000);
+        }, 300);
+    });
+})();
+
+function triggerOutro() {
+    const overlay = document.getElementById('outroOverlay');
+    overlay.classList.add('show');
+}
+
+function skipToEnd() {
+    const scroll = document.getElementById('creditScroll');
+    // Mematikan animasi scroll seketika
+    scroll.style.animation = 'none';
+    scroll.style.transform = 'translateY(calc(-100% + 100vh))';
+
+    // Langsung memunculkan layar hitam tanpa delay panjang
+    setTimeout(() => {
+        triggerOutro();
+    }, 100);
+}
+</script>
 </body>
-
 </html>
-
-
